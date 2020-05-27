@@ -1,7 +1,7 @@
 {
-  "name": "Edit button - Contentstack",
-  "version": "0.3",
-  "description": "Add a edit button to your front end and auto re-load the page when you publish - using the Headless CMS Contentstack",
+  "name": "Contentstack",
+  "version": "1.0.0",
+  "description": "Quickly navigate between live web pages and entries in Contentstack. This Chrome Extension provides an intuitive editing experience for users who need to quickly find and update content directly from a webpage.",
   "permissions": ["activeTab", "declarativeContent", "storage", "tabs"],
   "background": {
     "scripts": ["background.js"],

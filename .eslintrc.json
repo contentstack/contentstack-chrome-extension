@@ -1,0 +1,14 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jquery": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2016,
+        "sourceType": "module"
+    },
+     "globals": {
+        "ContentstackUIExtension": false
+    }
+}
