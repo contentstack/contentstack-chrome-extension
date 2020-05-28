@@ -12,9 +12,12 @@ If you are on a web page of a site that is powered by Contentstack, and if you h
 3. Add the following attributes to the body tag of your website templates or pages:
          - **data-pageref**: Used to identify the entry UID of the current page
          - **Data-content	type**: Used to identify the content type UID of the entry
-         - **data-local**: Used to identify the local of the entry for the current page
+         - **data-locale**: Used to identify the locale of the entry for the current page
+
          Here’s an example of how to add these details in your code:
-         <body data-pageref="bltb8b487559a1b715d" data-contenttype="product" data-local="en-us">
+
+         <body data-pageref="bltb8b487559a1b715d" data-contenttype="product" data-locale="en-us">
+
          In the above example, "bltb8b487559a1b715d" is the UID of the entry and "product" is the UID of the content type, and "en-us" is the locale of the entry of the corresponding web page.  
 4. Go to the tab in your Chrome browser where you want to use this extension, and reload or refresh the page.
 **Note**: This is a one-time activity when you add a new domain or an API key.

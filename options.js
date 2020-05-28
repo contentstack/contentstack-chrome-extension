@@ -1,5 +1,4 @@
 function focus_event(evt) {
-  console.log(evt.target.parentNode.childNodes);
   evt.target.parentNode.childNodes[1].style.display = "block";
   evt.target.style.cssText =
     "border: 1px solid #24c2a3; box-sizing: border-box; border-radius: 1px; background: #f7fbfd;";
@@ -10,7 +9,6 @@ function blur_event(evt) {
     "border: 1px solid #dfe2ea; box-sizing: border-box; border-radius: 1px; background: transparent;";
 }
 function dynamic_focus_event(evt) {
-  console.log(evt.target.parentNode.childNodes);
   evt.target.parentNode.childNodes[0].style.display = "block";
   evt.target.style.cssText =
     "border: 1px solid #24c2a3; box-sizing: border-box; border-radius: 1px; background: #f7fbfd;";
@@ -23,7 +21,6 @@ function dynamic_blur_event(evt) {
 
 function remove_apikey(evt) {
   let block_array = Array.from(document.getElementsByClassName("apikey-block"));
-  // console.log(block_array[0].childNodes[1].childNodes[1]);
   if (block_array.length === 1) {
     block_array[0].childNodes[1].childNodes[1].style.display = "none";
   } else {
