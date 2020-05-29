@@ -21,16 +21,18 @@ function dynamic_blur_event(evt) {
 
 function remove_apikey(evt) {
   let block_array = Array.from(document.getElementsByClassName("apikey-block"));
-  if (block_array.length === 1) {
-    block_array[0].childNodes[1].childNodes[1].style.display = "none";
-  } else {
-    evt.target.parentNode.parentNode.parentNode.remove();
+  if (block_array.length > 1) {
+    evt.target.parentNode.parentNode.remove();
+    let newBlock = Array.from(document.getElementsByClassName("apikey-block"));
+    if (newBlock.length === 1) {
+      newBlock[0].childNodes[0].childNodes[0].style.display = "none";
+    }
   }
 }
 function add_apikey() {
   var lbl, ipt;
 
-  lbl = { for: "stackId", class: "stack-label", text: "You stacks API key" };
+  lbl = { for: "stackId", class: "stack-label", text: "Stack API key" };
   ipt = { name: "stackId", class: "stackId", holder: "api key" };
   var border_div = document.createElement("div");
   border_div.className = "apikey-block";
@@ -42,10 +44,7 @@ function add_apikey() {
   var cnt_remove = document.createElement("div");
   cnt_remove.className = "remove-btn-div";
   var remove_btn = document.createElement("button");
-  var remove_icon = document.createElement("img");
-  remove_icon.src = "https://new-static.contentstack.io/images/cancel.svg";
   remove_btn.className = "remove-btn";
-  remove_btn.appendChild(remove_icon);
   cnt_remove.appendChild(remove_btn);
 
   cnt_div.appendChild(span_bar);
@@ -58,12 +57,12 @@ function add_apikey() {
   lbl = {
     for: "domains",
     class: "domain-label",
-    text: "Your host/domain name",
+    text: "Host or domain name",
   };
   ipt = {
     name: "domains",
     class: "domains",
-    holder: "e.g.- example.com,localhost:3000",
+    holder: "example.com,localhost:3000",
   };
   var domains_details = create_Elements(lbl, ipt);
   cnt_div = document.createElement("div");
@@ -103,12 +102,12 @@ function create_Elements(lbl, ipt) {
 }
 
 function save_options() {
+  console.log('saving setting');
   var stackId = Array.from(document.getElementsByClassName("stackId"));
   stackId = stackId.map((el) => el.value);
   var btnColor = document.getElementById("btnColor").value;
   var btnPos = document.getElementById("btnPos")[
-    document.getElementById("btnPos").selectedIndex
-  ].value;
+    document.getElementById("btnPos").selectedIndex].value;
   var domains = Array.from(document.getElementsByClassName("domains"));
   domains = domains.map((el) => el.value);
   chrome.storage.sync.set(
@@ -120,7 +119,7 @@ function save_options() {
     },
     function () {
       var status = document.getElementById("status");
-      status.textContent = "Options saved.";
+      status.textContent = "Settings saved successfully";
       setTimeout(function () {
         window.close();
       }, 750);
@@ -167,8 +166,12 @@ document.addEventListener("DOMContentLoaded", restore_options);
 document.getElementById("save").addEventListener("click", save_options);
 document.getElementById("stack-api-btn").addEventListener("click", add_apikey);
 document.querySelectorAll("input").forEach((element) => {
-  element.addEventListener("focus", focus_event);
+  if (element.name !== "btnColor") {
+    element.addEventListener("focus", focus_event);
+  }
 });
 document.querySelectorAll("input").forEach((element) => {
-  element.addEventListener("blur", blur_event);
+  if (element.name !== "btnColor") {
+    element.addEventListener("blur", blur_event);
+  }
 });

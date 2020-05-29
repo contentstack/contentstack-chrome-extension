@@ -712,18 +712,22 @@ aside {
     position: absolute;
     right: 0;
     top: 0;
-    height: 32px;
-    width: 32px;
+    height: 16px;
+    width: 16px;
     color: #4b6473;
+    display: none;
     background-color: transparent;
     border: none;
     cursor: pointer;
     outline: none;
     z-index: 999;
+    background: url('https://new-static.contentstack.io/images/cancel.svg') no-repeat;
+    margin-top: 16px;
+    margin-right: 16px;
 }
-.remove-btn img{
-    width:14px;
-}
-.remove-btn:hover img{
-    width: 16px;
+.remove-btn:hover{
+    width: 17px;
+    height: 17px;
+
+
 }
