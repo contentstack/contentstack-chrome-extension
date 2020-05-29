@@ -24,7 +24,7 @@ function remove_apikey(evt) {
   if (block_array.length === 1) {
     block_array[0].childNodes[1].childNodes[1].style.display = "none";
   } else {
-    evt.target.parentNode.parentNode.remove();
+    evt.target.parentNode.parentNode.parentNode.remove();
   }
 }
 function add_apikey() {
@@ -42,8 +42,10 @@ function add_apikey() {
   var cnt_remove = document.createElement("div");
   cnt_remove.className = "remove-btn-div";
   var remove_btn = document.createElement("button");
+  var remove_icon = document.createElement("img");
+  remove_icon.src = "https://new-static.contentstack.io/images/cancel.svg";
   remove_btn.className = "remove-btn";
-  remove_btn.innerText = "X";
+  remove_btn.appendChild(remove_icon);
   cnt_remove.appendChild(remove_btn);
 
   cnt_div.appendChild(span_bar);

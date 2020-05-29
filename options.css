@@ -721,7 +721,9 @@ aside {
     outline: none;
     z-index: 999;
 }
-
-.remove-btn:hover {
-    font-size: 18px;
+.remove-btn img{
+    width:14px;
+}
+.remove-btn:hover img{
+    width: 16px;
 }
