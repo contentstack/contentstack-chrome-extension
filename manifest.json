@@ -1,7 +1,7 @@
 {
   "name": "Contentstack",
   "version": "1.0.0",
-  "description": "Quickly navigate between live web pages and entries in Contentstack. This Chrome Extension provides an intuitive editing experience for users who need to quickly find and update content directly from a webpage.",
+  "description": "Quickly navigate from a live web page to its corresponding entry in Contentstack",
   "permissions": ["activeTab", "declarativeContent", "storage", "tabs"],
   "background": {
     "scripts": ["background.js"],
