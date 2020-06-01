@@ -32,8 +32,8 @@ function remove_apikey(evt) {
 function add_apikey() {
   var lbl, ipt;
 
-  lbl = { for: "stackId", class: "stack-label", text: "Stack API key" };
-  ipt = { name: "stackId", class: "stackId", holder: "api key" };
+  lbl = { for: "stackId", class: "stack-label", text: "Stack API Key" };
+  ipt = { name: "stackId", class: "stackId", holder: "API key" };
   var border_div = document.createElement("div");
   border_div.className = "apikey-block";
   var stack_details = create_Elements(lbl, ipt);
@@ -57,12 +57,12 @@ function add_apikey() {
   lbl = {
     for: "domains",
     class: "domain-label",
-    text: "Host or domain name",
+    text: "Domain Name or Host",
   };
   ipt = {
     name: "domains",
     class: "domains",
-    holder: "example.com,localhost:3000",
+    holder: "example.com, localhost:3000",
   };
   var domains_details = create_Elements(lbl, ipt);
   cnt_div = document.createElement("div");
