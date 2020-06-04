@@ -7,6 +7,7 @@ chrome.storage.sync.get(
 function checkDomain(dom, stack, btn, btnPos) {
   var domains = dom.map((el) => el.split(","));
   var host = window.location.host;
+  
   var stacks = stack;
   if (stacks.length > 1) {
     stacks.forEach((stack, idx) => {
