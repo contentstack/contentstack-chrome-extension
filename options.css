@@ -444,7 +444,7 @@ aside {
     display: block
 }
 
-#btnColor, #btnPos, #localId, #save, input, textarea {
+#btnColor, select, #localId, #save, input, textarea {
     height: 40px;
     width: 264px;
     padding-left: 12px;
@@ -515,7 +515,7 @@ aside {
 .apikey-block {
     position: relative;
     width: 448px;
-    height: 240px;
+    height: 316px;
     border: 2px solid #eef2f5;
     margin: 12px 20px 12px 12px;
     border-top: 8px solid #eef2f5
@@ -579,7 +579,6 @@ aside {
     border: 1px solid #e6e6e6;
     box-sizing: border-box;
     color: #4b6473;
-    ;
     margin: 12px;
 }
 
@@ -610,6 +609,42 @@ aside {
 
 .add-apikey:hover {
     color: #24c2a3
+}
+
+.region-setting{
+    position: relative;
+}
+.region-select-label {
+    position: absolute;
+    left: 32px;
+    height: 14px;
+}
+
+#slt-rgn, .regionSelect {
+    position: absolute;
+    top: 24px;
+    margin-left: 32px;
+    width: 256px;
+    height: 40px;
+}
+
+#region-div, .rgn-setting-cnt {
+    display: none;
+    position: relative;
+    top: 82px;
+}
+
+.region-label {
+    position: absolute;
+    margin-top: 12px;
+    margin-left: 16px;
+}
+
+.region-inp {
+    position: absolute;
+    margin-top: 42px;
+    margin-left: 16px;
+    width: 384px;
 }
 
 .buttom-section {
@@ -725,9 +760,8 @@ aside {
     margin-top: 16px;
     margin-right: 16px;
 }
-.remove-btn:hover{
+
+.remove-btn:hover {
     width: 17px;
     height: 17px;
-
-
 }

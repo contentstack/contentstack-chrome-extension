@@ -1,37 +1,55 @@
 chrome.storage.sync.get(
-  ["dom", "stack", "type", "btn", "btnPos", "watch", "delay"],
+  ["dom", "stack", "type", "btn", "btnPos", "region", "watch", "delay"],
   function (items) {
-    checkDomain(items.dom, items.stack, items.btn, items.btnPos);
+    checkDomain(items.dom, items.stack, items.btn, items.btnPos, items.region);
   }
 );
-function checkDomain(dom, stack, btn, btnPos) {
-  var domains = dom.map((el) => el.split(","));
+function checkDomain(dom, stack, btn, btnPos, region) {
+  if (dom) {
+    var domains = dom.map((el) => el.split(","));
+  }
   var host = window.location.host;
-  
+
   var stacks = stack;
-  if (stacks.length > 1) {
-    stacks.forEach((stack, idx) => {
-      var domain = domains[idx];
+  if (stacks) {
+    if (stacks.length > 1) {
+      stacks.forEach((stack, idx) => {
+        var domain = domains[idx];
+        var csHost;
+
+        if (region[idx].select === "CR") {
+          csHost = region[idx].customData;
+        } else {
+          csHost = region[idx].select;
+        }
+        for (var x = 0; x < domain.length; x++) {
+          var hostRX = new RegExp("^" + domain[x] + "$");
+          if (hostRX.test(host)) {
+            buildBtn(csHost, stack, btn, btnPos);
+            return;
+          }
+        }
+      });
+    } else {
+      let domain = domains[0];
+      var csHost;
+
+      if (region[0].select === "CR") {
+        csHost = region[0].customData;
+      } else {
+        csHost = region[0].select;
+      }
       for (var x = 0; x < domain.length; x++) {
         var hostRX = new RegExp("^" + domain[x] + "$");
         if (hostRX.test(host)) {
-          buildBtn(stack, btn, btnPos);
+          buildBtn(csHost, stack[0], btn, btnPos);
           return;
         }
-      }
-    });
-  } else {
-    let domain = domains[0];
-    for (var x = 0; x < domain.length; x++) {
-      var hostRX = new RegExp("^" + domain[x] + "$");
-      if (hostRX.test(host)) {
-        buildBtn(stack[0], btn, btnPos);
-        return;
       }
     }
   }
 }
-function buildBtn(stack, btn, btnPos) {
+function buildBtn(csHost, stack, btn, btnPos) {
   var pageRef = document.body.getAttribute("data-pageref");
   var ct = document.body.getAttribute("data-contenttype");
   var local = document.body.getAttribute("data-locale");
@@ -42,7 +60,9 @@ function buildBtn(stack, btn, btnPos) {
     a.style.backgroundColor = btn;
     a.setAttribute("target", "blank");
     a.href =
-      "https://app.contentstack.com/#!/stack/" +
+      "https://" +
+      csHost +
+      "/#!/stack/" +
       stack +
       "/content-type/" +
       ct +

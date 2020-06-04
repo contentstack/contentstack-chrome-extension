@@ -22,8 +22,8 @@
             <div class="section__panel section__panel--half body-section">
                 <h2 class="setting-title">Stack and Domain Settings</h2>
                 <div id="apikey-div">
-                    <div class="apikey-block"><div 
-                        class="remove-btn-div"><button class="remove-btn"></button>
+                    <div class="apikey-block">
+                        <div class="remove-btn-div"><button class="remove-btn"></button>
                         </div>
                         <div class="container">
                             <span class="container-bar"></span>
@@ -36,13 +36,26 @@
                             <input name="domains" class="domains" id="domainKeyId" value=""
                                 placeholder="example.com, localhost:3000">
                         </div>
+                        <div class="region-setting">
+                            <label for="region" class="region-select-label">Select Region</label>
+                            <select name="region" id="slt-rgn" class="regionSelect">
+                                <option value="app.contentstack.com">North America</option>
+                                <option value="eu-app.contentstack.com">Europe</option>
+                                <option value="CR">Other</option>
+                            </select>
+                            <div class="container" id="region-div">
+                                <span class="container-bar"></span>
+                                <label for="region" class="region-label">Region</label>
+                                <input name="region" class="region-inp" id="regionId" value=""
+                                    placeholder="eu-app.contentstack.com">
+                            </div>
+                        </div>
                     </div>
                     <div class="add-apikey-div" id="stack-api-btn">
                         <span class="add-stack-btn"></span>
                         <button class="add-apikey">Add Stack</button>
                     </div>
                 </div>
-
             </div>
             <div class="section__panel buttom-section">
                 <h2 class="btn-set-text">Button Settings</h2>
