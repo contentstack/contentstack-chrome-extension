@@ -35,9 +35,9 @@ function remove_apikey(evt) {
 }
 
 function regionSelection(evt) {
-  console.log(evt);
 
   if (evt.target.value === "CR") {
+    evt.target.parentNode.style="top:16px"
     evt.target.parentNode.parentNode.style = "height:398px";
     if (evt.target.parentNode.childNodes[2].nodeName === "DIV") {
       evt.target.parentNode.childNodes[2].style = "display:block";
@@ -45,6 +45,7 @@ function regionSelection(evt) {
       evt.target.parentNode.childNodes[5].style = "display:block";
     }
   } else {
+    evt.target.parentNode.style="top:22px"
     evt.target.parentNode.parentNode.style = "height:334px";
     if (evt.target.parentNode.childNodes[2].nodeName === "DIV") {
       evt.target.parentNode.childNodes[2].style = "display:none";
@@ -86,7 +87,7 @@ function createsRegionSetting() {
   containerDiv.classList.add("rgn-setting-cnt");
   var containerSpan = document.createElement("span");
   containerSpan.className = "container-bar";
-  containerSpan.classList.add("custom-bar")
+  containerSpan.classList.add("custom-bar");
   var containerLabel = document.createElement("Label");
   containerLabel.for = "region";
   containerLabel.className = "region-label";
@@ -189,21 +190,19 @@ function save_options() {
     document.getElementById("btnPos").selectedIndex
   ].value;
   var regions = Array.from(document.getElementsByClassName("regionSelect"));
-  var newArr =[];
-   regions.forEach(regionValue =>{
-    let obj={};
-    obj["select"]=regionValue.value;
-    if (
-      regionValue.nextElementSibling.childNodes[2].nodeName === "INPUT"
-    ) {
-      obj["customData"]= regionValue.nextElementSibling.childNodes[2].value
+  var newArr = [];
+  regions.forEach((regionValue) => {
+    let obj = {};
+    obj["select"] = regionValue.value;
+    if (regionValue.nextElementSibling.childNodes[2].nodeName === "INPUT") {
+      obj["customData"] = regionValue.nextElementSibling.childNodes[2].value;
     } else {
-      obj["customData"]= regionValue.nextElementSibling.childNodes[5].value
+      obj["customData"] = regionValue.nextElementSibling.childNodes[5].value;
     }
-    
+
     newArr.push(obj);
-  })
-  regions = newArr
+  });
+  regions = newArr;
 
   var domains = Array.from(document.getElementsByClassName("domains"));
   domains = domains.map((el) => el.value);
@@ -235,8 +234,8 @@ function restore_options() {
       region: "",
     },
     function (items) {
-      console.log('restore', items);
-      
+      console.log("restore", items);
+
       if (items.stack.length > 1) {
         for (let i = 1; i < items.stack.length; i++) {
           add_apikey();
@@ -257,7 +256,8 @@ function restore_options() {
             element.value = items.region[idx].select;
             if (items.region[idx].select === "CR") {
               element.nextElementSibling.style.display = "block";
-              element.parentNode.parentNode.style.height = "398px"
+              element.parentNode.style.top="16px"
+              element.parentNode.parentNode.style.height = "398px";
               if (
                 element.nextElementSibling.childNodes[2].nodeName === "INPUT"
               ) {
@@ -277,7 +277,8 @@ function restore_options() {
           document.getElementById("slt-rgn").value = items.region[0].select;
           if (items.region === "CR") {
             document.getElementById("region-div").style = "display:block";
-            document.getElementById("regionId").value = items.customRgn[0].customData;
+            document.getElementById("regionId").value =
+              items.customRgn[0].customData;
           }
         }
       }
