@@ -515,7 +515,7 @@ aside {
 .apikey-block {
     position: relative;
     width: 448px;
-    height: 316px;
+    height: 334px;
     border: 2px solid #eef2f5;
     margin: 12px 20px 12px 12px;
     border-top: 8px solid #eef2f5
@@ -545,7 +545,10 @@ aside {
     height: 102px;
     background: #24c2a3
 }
-
+.custom-bar{
+    height: 60px;
+    top: -8px;
+}
 .stackId {
     position: absolute;
     width: 384px;
@@ -613,17 +616,18 @@ aside {
 
 .region-setting{
     position: relative;
+    top: 12px;
 }
 .region-select-label {
     position: absolute;
-    left: 32px;
+    left: 28px;
     height: 14px;
 }
 
 #slt-rgn, .regionSelect {
     position: absolute;
     top: 24px;
-    margin-left: 32px;
+    margin-left: 28px;
     width: 256px;
     height: 40px;
 }
@@ -631,7 +635,8 @@ aside {
 #region-div, .rgn-setting-cnt {
     display: none;
     position: relative;
-    top: 82px;
+    top: 80px;
+    height: 60px;
 }
 
 .region-label {
@@ -642,7 +647,7 @@ aside {
 
 .region-inp {
     position: absolute;
-    margin-top: 42px;
+    /* margin-top: 42px; */
     margin-left: 16px;
     width: 384px;
 }

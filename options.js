@@ -38,14 +38,14 @@ function regionSelection(evt) {
   console.log(evt);
 
   if (evt.target.value === "CR") {
-    evt.target.parentNode.parentNode.style = "height:424px";
+    evt.target.parentNode.parentNode.style = "height:398px";
     if (evt.target.parentNode.childNodes[2].nodeName === "DIV") {
       evt.target.parentNode.childNodes[2].style = "display:block";
     } else {
       evt.target.parentNode.childNodes[5].style = "display:block";
     }
   } else {
-    evt.target.parentNode.parentNode.style = "height:316px";
+    evt.target.parentNode.parentNode.style = "height:334px";
     if (evt.target.parentNode.childNodes[2].nodeName === "DIV") {
       evt.target.parentNode.childNodes[2].style = "display:none";
     } else {
@@ -86,14 +86,15 @@ function createsRegionSetting() {
   containerDiv.classList.add("rgn-setting-cnt");
   var containerSpan = document.createElement("span");
   containerSpan.className = "container-bar";
+  containerSpan.classList.add("custom-bar")
   var containerLabel = document.createElement("Label");
   containerLabel.for = "region";
   containerLabel.className = "region-label";
-  containerLabel.innerText = "Region";
+  containerLabel.innerText = "";
   var inputFiled = document.createElement("input");
   (inputFiled.name = "region"), (inputFiled.className = "region-inp");
   inputFiled.value = "";
-  inputFiled.placeholder = "eu-app.contentstack.com";
+  inputFiled.placeholder = "private-cloud.contentstack.com";
   inputFiled.addEventListener("focus", dynamic_focus_event);
   inputFiled.addEventListener("blur", dynamic_blur_event);
   containerDiv.appendChild(containerSpan);
@@ -256,7 +257,7 @@ function restore_options() {
             element.value = items.region[idx].select;
             if (items.region[idx].select === "CR") {
               element.nextElementSibling.style.display = "block";
-              element.parentNode.parentNode.style.height = "424px"
+              element.parentNode.parentNode.style.height = "398px"
               if (
                 element.nextElementSibling.childNodes[2].nodeName === "INPUT"
               ) {
