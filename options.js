@@ -57,7 +57,7 @@ function createsRegionSetting() {
   let rgnMainLabel = document.createElement('Label');
   rgnMainLabel.for = 'region';
   rgnMainLabel.className = 'region-select-label';
-  rgnMainLabel.innerText = 'Select Region';
+  rgnMainLabel.innerText = 'Region';
 
   let selectTag = document.createElement('select');
   selectTag.className = 'regionSelect';
