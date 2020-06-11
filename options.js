@@ -109,7 +109,7 @@ function addApikey() {
   let ipt;
 
   lbl = { for: 'stackId', class: 'stack-label', text: 'Stack API Key' };
-  ipt = { name: 'stackId', class: 'stackId', holder: 'API key' };
+  ipt = { name: 'stackId', class: 'stackId', holder: 'API key', title:'Enter your stack API key' };
   let border_div = document.createElement('div');
   border_div.className = 'apikey-block';
   let stack_details = createApiBlock(lbl, ipt);
@@ -139,7 +139,8 @@ function addApikey() {
   ipt = {
     name: 'domains',
     class: 'domains',
-    holder: 'example.com, localhost:3000'
+    holder: 'example.com, localhost:3000',
+    title: 'Enter your domain names seprated by ,'
   };
   let domains_details = createApiBlock(lbl, ipt);
   cnt_div = document.createElement('div');
@@ -172,7 +173,8 @@ function createApiBlock(lbl, ipt) {
   Object.assign(input, {
     name: ipt.name,
     className: ipt.class,
-    placeholder: ipt.holder
+    placeholder: ipt.holder,
+    title: ipt.title
   });
   return [label, input];
 }
@@ -229,6 +231,8 @@ function restoreOptions() {
       region: ''
     },
     function (items) {
+      console.log('restore', items);
+      
       if (items.stack.length > 1) {
         for (let i = 1; i < items.stack.length; i++) {
           addApikey();
@@ -265,9 +269,11 @@ function restoreOptions() {
         document.getElementById('stackKeyId').value = items.stack[0];
         document.getElementById('domainKeyId').value = items.dom[0];
         document.getElementById('slt-rgn').value = items.region[0].select;
-        if (items.region === 'CR') {
-          document.getElementById('region-div').style = 'display:block';
-          document.getElementById('regionId').value = items.customRgn[0].customData;
+        if (items.region[0].select === 'CR') {
+          document.getElementById('region-div').style.display= "block";
+          document.getElementById('regionSetting').style.top= "16px";
+          document.getElementById('apiBlock').style.height = "398px";
+          document.getElementById('regionId').value = items.region[0].customData;
         }
       }
       document.getElementById('btnColor').value = items.btn;

@@ -22,21 +22,21 @@
             <div class="section__panel section__panel--half body-section">
                 <h2 class="setting-title">Stack and Domain Settings</h2>
                 <div id="apikey-div">
-                    <div class="apikey-block">
+                    <div class="apikey-block" id="apiBlock">
                         <div class="remove-btn-div"><button class="remove-btn"></button>
                         </div>
                         <div class="container">
                             <span class="container-bar"></span>
                             <label for="stackId" class="stack-label">Stack API Key</label>
-                            <input name="stackId" class="stackId" id="stackKeyId" placeholder="API key">
+                            <input title="Enter your stack API key" name="stackId" class="stackId" id="stackKeyId" placeholder="API key">
                         </div>
                         <div class="container">
                             <span class="container-bar"></span>
                             <label for="domains" class="domain-label">Domain Name or Host</label>
-                            <input name="domains" class="domains" id="domainKeyId" value=""
+                            <input title="Enter your domain names seprated by ," name="domains" class="domains" id="domainKeyId" value=""
                                 placeholder="example.com, localhost:3000">
                         </div>
-                        <div class="region-setting">
+                        <div class="region-setting" id="regionSetting">
                             <label for="region" class="region-select-label">Region</label>
                             <select name="region" id="slt-rgn" class="regionSelect">
                                 <option value="app.contentstack.com">North America</option>
