@@ -25,4 +25,5 @@ If you are on a web page of a site that is powered by Contentstack, and if you h
 6.   The **Edit** button will now be visible on your Contentstack-powered web pages.
 7.   Click on this button and you will be redirected to its corresponding entry page.
 
+ #### Credit
   This project is inspired from the work originally created by SSE (https://github.com/FergusKing/contentstack-edit-button). We want to acknowledge and thank them for inspiring us to create Contentstack Chrome Extension.
