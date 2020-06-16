@@ -25,7 +25,7 @@
         "http://*/*",
         "https://*/*"
       ],
-      "js": ["contentScript.js"]
+      "js": ["content-script.js"]
     }
   ],
   "icons": {

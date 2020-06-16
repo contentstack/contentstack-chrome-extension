@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 chrome.runtime.onInstalled.addListener(function () {

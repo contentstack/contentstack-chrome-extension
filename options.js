@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 
 function focusEvent(evt) {
   evt.target.parentNode.childNodes[1].style.display = 'block';

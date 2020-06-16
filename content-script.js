@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 chrome.storage.sync.get(
   ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
   function (items) {
