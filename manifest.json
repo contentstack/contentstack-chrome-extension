@@ -25,6 +25,7 @@
         "http://*/*",
         "https://*/*"
       ],
+      "all_frames": true,
       "js": ["content-script.js"]
     }
   ],

@@ -13,7 +13,7 @@ function checkDomain(dom, stack, btn, btnPos, region) {
       return domArr.map((elms) => {
         if (elms.includes('http') || elms.includes('https')) {
           let newDomain = elms.trim();
-          return new URL(newDomain).hostname;
+          return new URL(newDomain).host;
         }
         return elms.trim();
       });
@@ -31,7 +31,7 @@ function checkDomain(dom, stack, btn, btnPos, region) {
         if (region[idx].select === 'CR') {
           csHost = region[idx].customData;
           if (csHost.includes('http') || csHost.includes('https')) {
-            csHost = new URL(csHost).hostname;
+            csHost = new URL(csHost).host;
           }
         } else {
           csHost = region[idx].select;
@@ -51,7 +51,7 @@ function checkDomain(dom, stack, btn, btnPos, region) {
       if (region[0].select === 'CR') {
         csHost = region[0].customData;
         if (csHost.includes('http') || csHost.includes('https')) {
-          csHost = new URL(csHost).hostname;
+          csHost = new URL(csHost).host;
         }
       } else {
         csHost = region[0].select;
