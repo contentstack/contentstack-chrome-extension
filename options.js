@@ -220,6 +220,7 @@ function saveOptions() {
       }, 750);
     }
   );
+ _gaq.push(['_trackEvent', 'Save', 'clicked']);
 }
 
 function restoreOptions() {
@@ -232,8 +233,6 @@ function restoreOptions() {
       region: ''
     },
     function (items) {
-      console.log('restore', items);
-      
       if (items.stack.length > 1) {
         for (let i = 1; i < items.stack.length; i++) {
           addApikey();
