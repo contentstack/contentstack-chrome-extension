@@ -4,6 +4,7 @@
 chrome.runtime.onInstalled.addListener(function () {
   chrome.runtime.onMessage.addListener(
     function (request, sender) {
+      
       if (request.action == 'active') {
         chrome.pageAction.show(sender.tab.id);
       }

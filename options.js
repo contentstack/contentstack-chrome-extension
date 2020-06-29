@@ -1,4 +1,22 @@
 /* eslint-disable no-undef */
+var storeApikey=[]
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-169821045-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+chrome.runtime.onMessage.addListener(
+  function(request) {
+      if (request.type === "clicked") {
+          _gaq.push(['_trackEvent','quick_edits', 'entry_edit', `${request.data}`]);
+      }
+  }
+);
 
 function focusEvent(evt) {
   evt.target.parentNode.childNodes[1].style.display = 'block';
@@ -210,7 +228,8 @@ function saveOptions() {
       btn: btnColor,
       btnPos: btnPos,
       dom: domains,
-      region: regions
+      region: regions,
+
     },
     function () {
       let status = document.getElementById('status');
@@ -220,7 +239,13 @@ function saveOptions() {
       }, 750);
     }
   );
- _gaq.push(['_trackEvent', 'Save', 'clicked']);
+ 
+  stackId.forEach((el)=>{
+    if (!storeApikey.includes(el)) {
+      _gaq.push(['_trackEvent','api_key', 'saved', `${el}`])
+    }
+  })  
+  
 }
 
 function restoreOptions() {
@@ -237,7 +262,7 @@ function restoreOptions() {
         for (let i = 1; i < items.stack.length; i++) {
           addApikey();
         }
-
+        storeApikey = items.stack;
         Array.from(document.getElementsByClassName('stackId')).forEach(
           (element, idx) => {
             element.value = items.stack[idx];
