@@ -97,7 +97,6 @@ function checkDomain(dom, stack, btn, btnPos, region) {
   }
 }
 function editContent(stack){
-  
   chrome.runtime.sendMessage({type:'clicked', data:stack})
 }
 
