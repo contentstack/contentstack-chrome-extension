@@ -12,8 +12,8 @@ _gaq.push(['_trackPageview']);
 
 chrome.runtime.onMessage.addListener(
   function(request) {
-      if (request.type === "clicked") {
-          _gaq.push(['_trackEvent','quick_edits', 'entry_edit', `${request.data}`]);
+      if (request.type === 'clicked') {
+          _gaq.push(['_trackEvent','Quick Edits', 'Entry Edit', `${request.data}`]);
       }
   }
 );
@@ -129,27 +129,27 @@ function addApikey() {
 
   lbl = { for: 'stackId', class: 'stack-label', text: 'Stack API Key' };
   ipt = { name: 'stackId', class: 'stackId', holder: 'API key', title:'Enter your stack API key' };
-  let border_div = document.createElement('div');
-  border_div.className = 'apikey-block';
-  let stack_details = createApiBlock(lbl, ipt);
-  let cnt_div = document.createElement('div');
-  cnt_div.className = 'container';
-  let span_bar = document.createElement('span');
-  span_bar.className = 'container-bar';
-  let cnt_remove = document.createElement('div');
-  cnt_remove.className = 'remove-btn-div';
-  let remove_btn = document.createElement('button');
-  remove_btn.className = 'remove-btn';
-  cnt_remove.appendChild(remove_btn);
+  let borderDiv = document.createElement('div');
+  borderDiv.className = 'apikey-block';
+  let stackDetails = createApiBlock(lbl, ipt);
+  let cntDiv = document.createElement('div');
+  cntDiv.className = 'container';
+  let spanBar = document.createElement('span');
+  spanBar.className = 'container-bar';
+  let cntRemove = document.createElement('div');
+  cntRemove.className = 'remove-btn-div';
+  let removeBtn = document.createElement('button');
+  removeBtn.className = 'remove-btn';
+  cntRemove.appendChild(removeBtn);
 
-  cnt_div.appendChild(span_bar);
-  cnt_div.appendChild(stack_details[0]);
-  cnt_div.appendChild(stack_details[1]);
+  cntDiv.appendChild(spanBar);
+  cntDiv.appendChild(stackDetails[0]);
+  cntDiv.appendChild(stackDetails[1]);
 
-  stack_details[1].addEventListener('focus', dynamicFocusEvent);
-  stack_details[1].addEventListener('blur', dynamicBlurEvent);
-  border_div.appendChild(cnt_remove);
-  border_div.appendChild(cnt_div);
+  stackDetails[1].addEventListener('focus', dynamicFocusEvent);
+  stackDetails[1].addEventListener('blur', dynamicBlurEvent);
+  borderDiv.appendChild(cntRemove);
+  borderDiv.appendChild(cntDiv);
   lbl = {
     for: 'domains',
     class: 'domain-label',
@@ -161,21 +161,21 @@ function addApikey() {
     holder: 'example.com, localhost:3000',
     title: 'Enter your domain names seprated by ,'
   };
-  let domains_details = createApiBlock(lbl, ipt);
-  cnt_div = document.createElement('div');
-  cnt_div.className = 'container';
-  span_bar = document.createElement('span');
-  span_bar.className = 'container-bar';
-  cnt_div.appendChild(span_bar);
-  cnt_div.appendChild(domains_details[0]);
-  cnt_div.appendChild(domains_details[1]);
-  domains_details[1].addEventListener('focus', dynamicFocusEvent);
-  domains_details[1].addEventListener('blur', dynamicBlurEvent);
-  border_div.appendChild(cnt_div);
-  border_div.appendChild(createsRegionSetting());
+  let domainsDetails = createApiBlock(lbl, ipt);
+  cntDiv = document.createElement('div');
+  cntDiv.className = 'container';
+  spanBar = document.createElement('span');
+  spanBar.className = 'container-bar';
+  cntDiv.appendChild(spanBar);
+  cntDiv.appendChild(domainsDetails[0]);
+  cntDiv.appendChild(domainsDetails[1]);
+  domainsDetails[1].addEventListener('focus', dynamicFocusEvent);
+  domainsDetails[1].addEventListener('blur', dynamicBlurEvent);
+  borderDiv.appendChild(cntDiv);
+  borderDiv.appendChild(createsRegionSetting());
   document
     .getElementById('apikey-div')
-    .insertBefore(border_div, document.getElementById('stack-api-btn'));
+    .insertBefore(borderDiv, document.getElementById('stack-api-btn'));
   document.querySelectorAll('.remove-btn').forEach((item) => {
     item.style.display = 'block';
     item.addEventListener('click', removeApikey);
@@ -242,7 +242,7 @@ function saveOptions() {
  
   stackId.forEach((el)=>{
     if (!storeApikey.includes(el)) {
-      _gaq.push(['_trackEvent','api_key', 'saved', `${el}`])
+      _gaq.push(['_trackEvent','Api Key', 'Saved', `${el}`])
     }
   })  
   
@@ -295,9 +295,9 @@ function restoreOptions() {
         document.getElementById('domainKeyId').value = items.dom[0];
         document.getElementById('slt-rgn').value = items.region[0].select;
         if (items.region[0].select === 'CR') {
-          document.getElementById('region-div').style.display= "block";
-          document.getElementById('regionSetting').style.top= "16px";
-          document.getElementById('apiBlock').style.height = "398px";
+          document.getElementById('region-div').style.display= 'block';
+          document.getElementById('regionSetting').style.top= '16px';
+          document.getElementById('apiBlock').style.height = '398px';
           document.getElementById('regionId').value = items.region[0].customData;
         }
       }
