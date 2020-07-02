@@ -1,10 +1,17 @@
 /* eslint-disable no-undef */
-var storeApikey=[]
+let storeApikey=[]
+let saveBtnFlag = false
+let apikeySend = false
 
 chrome.runtime.onMessage.addListener(
   function(request) {
       if (request.type === 'clicked') {
-          _gaq.push(['_trackEvent','Quick Edits', 'Entry Edit', `${request.data}`]);
+          ga('send', {
+            hitType: 'event',
+            eventCategory: 'Quick Edits',
+            eventAction: 'Entry Edit',
+            eventLabel: `${request.data}`
+          });
       }
   }
 );
@@ -233,9 +240,32 @@ function saveOptions() {
  
   stackId.forEach((el)=>{
     if (!storeApikey.includes(el)) {
-      _gaq.push(['_trackEvent','Api Key', 'Saved', `${el}`])
+      saveBtnFlag = true
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'Api Key',
+        eventAction: 'Saved',
+        eventLabel:  `${el}`
+      });
+    }else if (storeApikey.length !== stackId.length && !apikeySend) {
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'Api Key',
+        eventAction: 'Saved',
+        eventLabel:  `${el}`
+      });
+      apikeySend = true
+      saveBtnFlag = true
     }
   })  
+  if (!saveBtnFlag) {
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Api Key',
+      eventAction: 'Saved',
+      eventLabel:  `${el}`
+    });
+  }
   
 }
 
