@@ -52,11 +52,11 @@ function checkDomain(dom, stack, btn, btnPos, region) {
                 if (bodyAttr[0] && bodyAttr[1] && bodyAttr[2]) {
                   
                   clearInterval(checkAttr);
-                  buildBtn(csHost, stack[0], btn, btnPos, bodyAttr);
+                  buildBtn(csHost, stack, btn, btnPos, bodyAttr);
                 }
               }, 2000);
             }else{
-              buildBtn(csHost, stack[0], btn, btnPos, bodyAttr);
+              buildBtn(csHost, stack, btn, btnPos, bodyAttr);
             }
             return;
           }
@@ -101,7 +101,7 @@ function editContent(stack){
 }
 
 function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
-
+  
   if (stack && bodyAttr[0] && bodyAttr[1] && bodyAttr[2]) {
     let a = document.createElement('a');
     a.className = 'ext__cms__edit';
