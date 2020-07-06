@@ -3,19 +3,6 @@ let storeApikey=[]
 let saveBtnFlag = false
 let apikeySend = false
 
-chrome.runtime.onMessage.addListener(
-  function(request) {
-      if (request.type === 'clicked') {
-          ga('send', {
-            hitType: 'event',
-            eventCategory: 'Quick Edits',
-            eventAction: 'Entry Edit',
-            eventLabel: `${request.data}`
-          });
-      }
-  }
-);
-
 function focusEvent(evt) {
   evt.target.parentNode.childNodes[1].style.display = 'block';
   evt.target.style.cssText = 'border: 1px solid #24c2a3; box-sizing: border-box; border-radius: 1px; background: #f7fbfd;';
@@ -263,7 +250,7 @@ function saveOptions() {
       hitType: 'event',
       eventCategory: 'Api Key',
       eventAction: 'Saved',
-      eventLabel:  `${el}`
+      eventLabel:  `${stackId[stackId.length-1]}`
     });
   }
   
