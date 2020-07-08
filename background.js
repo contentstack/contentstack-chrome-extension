@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
-chrome.runtime.onInstalled.addListener(function () {
+chrome.runtime.onInstalled.addListener(function (details) {
   chrome.runtime.onMessage.addListener(
     function (request, sender) {
       
@@ -34,6 +34,27 @@ chrome.runtime.onInstalled.addListener(function () {
       }
     }
   );
+      if(details.reason == "install"){
+        //call a function to handle a first install
+        const version = chrome.runtime.getManifest().version;
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'Extension Installation',
+          eventAction: 'Installed',
+          eventLabel: `Version: v${version}`
+        });
+    }else if(details.reason == "update"){
+      //call a function to handle an update
+      const version = chrome.runtime.getManifest().version;
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'Extension Updation',
+        eventAction: 'Updated',
+        eventLabel: `Version: from v${details.previousVersion} to v${version}`
+      });
+
+        
+    }
   let optionsUrl = chrome.extension.getURL('options.html');
   chrome.tabs.query({ url: optionsUrl }, function (tabs) {
     if (tabs.length) {
