@@ -11,7 +11,7 @@ If you are on a web page of a site that is powered by Contentstack, and if you h
 2. Once installed, a pop-up will prompt you to enter the stack details and button preferences. Provide the necessary details in each field (all fields are mandatory) and then save the configuration.
 3. Add the following attributes to the body tag of your website templates or pages:  
          - **data-pageref**: Used to identify the entry UID of the current page  
-         - **Data-contenttype**: Used to identify the content type UID of the entry  
+         - **data-contenttype**: Used to identify the content type UID of the entry  
          - **data-locale**: Used to identify the locale of the entry for the current page  
 
          Here’s an example of how to add these details in your code:
