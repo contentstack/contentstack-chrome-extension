@@ -205,9 +205,9 @@ aside {
     -webkit-box-sizing: border-box
 }
 
-.section__panel img {
+/* .section__panel img {
     width: 100%
-}
+} */
 
 .section__panel>h1, .section__panel>h2, .section__panel>h3, .section__panel>h4 {
     margin-top: 0
@@ -545,10 +545,12 @@ aside {
     height: 102px;
     background: #24c2a3
 }
-.custom-bar{
+
+.custom-bar {
     height: 60px;
     top: -8px;
 }
+
 .stackId {
     position: absolute;
     width: 384px;
@@ -614,10 +616,11 @@ aside {
     color: #24c2a3
 }
 
-.region-setting{
+.region-setting {
     position: relative;
     top: 22px;
 }
+
 .region-select-label {
     position: absolute;
     left: 28px;
@@ -710,6 +713,25 @@ aside {
     height: 65px;
     margin: 20px 0;
     border-radius: 0 0 6px 6px
+}
+
+#displayStatus {
+    float: left;
+    margin: 20px 0px 0px 28px;
+    text-align: center;
+    
+}
+
+#displayStatusRemark {
+    color: #e44952;
+    float: right;
+    margin-left: 5px;
+}
+
+#errorIcon {
+    width: 22px;
+    height: 22px;
+    display: none;
 }
 
 #save {

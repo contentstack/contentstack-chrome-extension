@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
 
 chrome.storage.sync.get(
@@ -32,7 +33,7 @@ function checkDomain(dom, stack, btn, btnPos, region) {
   if (stacks) {
     if (stacks.length > 1) {
       stacks.forEach((stack, idx) => {
-        let domain = domains[idx];
+        let domain = [domains[idx].toString().replace(/[`~!@#$%^&*()_|+\=?;'",<>\{\}\[\]\\\/]/gi, '')];
         let csHost;
 
         if (region[idx].select === 'CR') {
@@ -64,7 +65,7 @@ function checkDomain(dom, stack, btn, btnPos, region) {
         }
       });
     } else {
-      let domain = domains[0];
+      let domain = [domains[0].toString().replace(/[`~!@#$%^&*()|+\=?;'",<>\{\}\[\]\\\/]/gi, '')];
       let csHost;
 
       if (region[0].select === 'CR') {
