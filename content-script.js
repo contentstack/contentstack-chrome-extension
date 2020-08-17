@@ -7,12 +7,21 @@ chrome.storage.sync.get(
     checkDomain(items.dom, items.stack, items.btn, items.btnPos, items.region);
   }
 );
+
+/**
+ * Function fetches attributes from body tag and returns realtive data
+ */
 function fetchAttributes() {
   let prf = document.body.getAttribute("data-pageref");
   let ct = document.body.getAttribute("data-contenttype");
   let lcl = document.body.getAttribute("data-locale");
   return [prf, ct, lcl];
 }
+
+/**
+ * Function compares url provided in stack block with active tab
+ * if true it create navigation button on webpage
+ */
 function checkDomain(dom, stack, btn, btnPos, region) {
   var domains;
   if (dom) {
@@ -100,9 +109,19 @@ function checkDomain(dom, stack, btn, btnPos, region) {
     }
   }
 }
+
+/**
+ * Function is triggered everytime when navigation button is clicked
+ * It send apikey associated with active tab to background.js
+ */
+
 function editContent(stack) {
   chrome.runtime.sendMessage({ type: "clicked", data: stack });
 }
+
+/**
+ * Function builds button on webpage 
+ */
 
 function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
   if (stack && bodyAttr[0] && bodyAttr[1] && bodyAttr[2]) {

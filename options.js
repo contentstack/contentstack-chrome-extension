@@ -26,6 +26,9 @@ function dynamicBlurEvent(evt) {
     "border: 1px solid #dfe2ea; box-sizing: border-box; border-radius: 1px; background: transparent;";
 }
 
+/**
+ * Function provide delete option to remove unwanted stack block 
+ */
 function removeApikey(evt) {
   let blockArray = Array.from(document.getElementsByClassName("apikey-block"));
   if (blockArray.length > 1) {
@@ -60,6 +63,11 @@ function regionSelection(evt) {
     }
   }
 }
+
+/**
+ * Function creates region section 
+ * containing dropdown as well as input fields for custom url
+ */
 
 function createsRegionSetting() {
   let regionMainDiv = document.createElement("div");
@@ -113,7 +121,9 @@ function createsRegionSetting() {
   regionMainDiv.appendChild(containerDiv);
   return regionMainDiv;
 }
-
+/**
+ * Function creates block containing apikey domain and region fields
+ */
 function addApikey() {
   let lbl;
   let ipt;
@@ -177,6 +187,12 @@ function addApikey() {
     item.addEventListener("click", removeApikey);
   });
 }
+
+/**
+ * Function creates field in stack block
+ * @param {*lbl obj contains required data label field} lbl
+ * @param {*ipt obj contains required data input field} ipt
+ */
 function createApiBlock(lbl, ipt) {
   let label = document.createElement("Label");
   Object.assign(label, {
@@ -194,23 +210,38 @@ function createApiBlock(lbl, ipt) {
   return [label, input];
 }
 
+/**
+ * Function checkes for url fields in stack block
+ * @param {*url from field} domain
+ * @param {*position of stack block} idx
+ */
+
 function domainCheck(domain, idx) {
+  let domainList = domain.split(",");
   let dExp = new RegExp(
     /^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.(xn--)?([a-z0-9\-]{1,61}|[a-z0-9-]{1,30}\.[a-z]{2,})$/
   );
   let localExp = /(\.\w+)*(:[0-9]+)$/;
-
-  if (domain.includes("http") || domain.includes("https")) {
-    return true;
-  } else if (dExp.test(domain)) {
-    return true;
-  } else if (localExp.test(domain)) {
-    return true;
-  } else {
-    document.getElementsByClassName("domains")[idx].style.borderColor = "red";
-    return false;
-  }
+  return domainList.map(function (domain) {
+    if (domain.includes("http") || domain.includes("https")) {
+      return true;
+    } else if (dExp.test(domain.trim())) {
+      return true;
+    } else if (localExp.test(domain.trim())) {
+      return true;
+    } else {
+      document.getElementsByClassName("domains")[idx].style.borderColor = "red";
+      return false;
+    }
+  });
 }
+
+/**
+ * Function checkes for apikey fields in stack block
+ * @param {*apikey from field} stack
+ * @param {*position of stack block} idx
+ */
+
 function stackCheck(stack, idx) {
   if (!stack) {
     document.getElementsByClassName("stackId")[idx].style.borderColor = "red";
@@ -218,6 +249,14 @@ function stackCheck(stack, idx) {
   }
   return true;
 }
+
+/**
+ * Function checkes for region fields in stack block
+ * @param {*region url from field} region
+ * @param {*position of stack block} idx
+ * * @param {*value from dropdown in region field} selection
+ */
+
 function regionCheck(region, idx, select) {
   let dExp = new RegExp(
     /^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.(xn--)?([a-z0-9\-]{1,61}|[a-z0-9-]{1,30}\.[a-z]{2,})$/
@@ -238,17 +277,27 @@ function regionCheck(region, idx, select) {
   }
 }
 
-function urlValidation(stack, region, domain) {
+/**
+ * Function validates fields in stack block
+ * @param {*apikey value from all stack block} stack
+ * @param {*region field value of all stack block} region
+ * @param {*url from domain field in all stack block} domain
+ */
+
+function fieldValidation(stack, region, domain) {
   let checkArr = stack.map(function (stack, index) {
     let dr = domainCheck(domain[index], index);
     let rr = regionCheck(region[index].customData, index, region[index].select);
     let sr = stackCheck(stack, index);
-    return (dr == rr) == sr ? true : false;
+    return (dr.every((dm) => dm === true) == rr) == sr ? true : false;
   });
-
   validationFlag = checkArr.every((el) => el == true);
 }
 
+/**
+ * Function is triggerd after save btn is clicked
+ * Function saves all fields data as well as validates all field parameters
+ */
 function saveOptions() {
   let stackId = Array.from(document.getElementsByClassName("stackId"));
   stackId = stackId.map((el) => el.value);
@@ -273,7 +322,7 @@ function saveOptions() {
   let domains = Array.from(document.getElementsByClassName("domains"));
   domains = domains.map((el) => el.value);
 
-  urlValidation(stackId, regions, domains);
+  fieldValidation(stackId, regions, domains);
 
   if (validationFlag) {
     chrome.storage.sync.set(
@@ -326,9 +375,15 @@ function saveOptions() {
   } else {
     let status = document.getElementById("displayStatusRemark");
     status.textContent = "Please enter valid inputs";
+    status.color = "#e44952";
     document.getElementById("errorIcon").style.display = "inline-block";
   }
 }
+
+/**
+ * Function is automatically tiggered after every option page is open
+ * It restores all field content from chrome localstorage
+ */
 
 function restoreOptions() {
   chrome.storage.sync.get(
