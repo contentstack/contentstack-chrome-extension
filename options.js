@@ -24,7 +24,7 @@ function dynamicBlurEvent(evt) {
 
 /**
  * Function provide delete option to remove unwanted stack block
- */
+ **/
 function removeApikey(evt) {
   const blockArray = Array.from(document.getElementsByClassName('apikey-block'));
   if (blockArray.length > 1) {
@@ -119,7 +119,7 @@ function createsRegionSetting() {
 }
 /**
  * Function creates block containing apikey domain and region fields
- */
+ **/
 function addApikey() {
   let lbl;
   let ipt;
@@ -186,9 +186,9 @@ function addApikey() {
 
 /**
  * Function creates field in stack block
- * @param {*lbl obj contains required data label field} lbl
- * @param {*ipt obj contains required data input field} ipt
- */
+ * @param {*lbl obj contains required data for label field} lbl
+ * @param {*ipt obj contains required data for input field} ipt
+ **/
 function createApiBlock(lbl, ipt) {
   const label = document.createElement('Label');
   Object.assign(label, {
@@ -207,10 +207,10 @@ function createApiBlock(lbl, ipt) {
 }
 
 /**
- * Function checkes for url fields in stack block
- * @param {*url from field} domain
+ * Function validates url fields in stack block
+ * @param {*urls from field} domain
  * @param {*position of stack block} idx
- */
+ **/
 
 function domainCheck(domain, idx) {
   const domainList = domain.split(',');
@@ -235,7 +235,7 @@ function domainCheck(domain, idx) {
  * Function checkes for apikey fields in stack block
  * @param {*apikey from field} stack
  * @param {*position of stack block} idx
- */
+ **/
 
 function stackCheck(stack, idx) {
   if (!stack) {
@@ -249,7 +249,7 @@ function stackCheck(stack, idx) {
  * Function checkes for region fields in stack block
  * @param {*region url from field} region
  * @param {*position of stack block} idx
- * * @param {*value from dropdown in region field} selection
+ * * @param {*value from dropdown in region field} select
  */
 
 function regionCheck(region, idx, select) {
@@ -272,8 +272,8 @@ function regionCheck(region, idx, select) {
 /**
  * Function validates fields in stack block
  * @param {*apikey value from all stack block} stack
- * @param {*region field value of all stack block} region
- * @param {*url from domain field in all stack block} domain
+ * @param {*region field value from all stack block} region
+ * @param {*url from domain field from all stack block} domain
  */
 
 function fieldValidation(stack, region, domain) {
@@ -373,7 +373,7 @@ function saveOptions() {
 }
 
 /**
- * Function is automatically tiggered after every option page is open
+ * Function is automatically tiggered after everytime option page is open
  * It restores all field content from chrome localstorage
  */
 
