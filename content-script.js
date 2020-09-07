@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
+let  observer;
 
 chrome.storage.sync.get(
   ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
@@ -151,3 +152,19 @@ function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
     chrome.runtime.sendMessage({ action: 'active' });
   }
 }
+
+/**
+ * Function checks for mutation and try to create button based on changed value
+ */
+
+ observer = new MutationObserver(function() {
+  chrome.storage.sync.get(
+    ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
+    (items) => {
+      checkDomain(items.dom, items.stack, items.btn, items.btnPos, items.region);
+    }
+  );
+});
+observer.observe(document.body, { 
+  attributes: true, 
+  attributeFilter: ['data-contenttype'] });
