@@ -13,10 +13,16 @@ chrome.storage.sync.get(
  * Function fetches attributes from body tag and returns realtive data
  */
 function fetchAttributes() {
-  const prf = document.body.getAttribute('data-pageref');
-  const ct = document.body.getAttribute('data-contenttype');
-  const lcl = document.body.getAttribute('data-locale');
-  return [prf, ct, lcl];
+  const pageref = document.body.getAttribute('data-pageref');
+  const contentType = document.body.getAttribute('data-contenttype');
+  const locale = document.body.getAttribute('data-locale');
+  if (pageref && contentType && locale) {
+    return [pageref,contentType,locale]
+  }else {
+  const nodeAttr = document.querySelector('[data-contenttype]')
+    return nodeAttr?[nodeAttr.getAttribute('data-pageref'), nodeAttr.getAttribute('data-contenttype'), nodeAttr.getAttribute('data-locale')]:""
+  }
+  
 }
 
 /**
