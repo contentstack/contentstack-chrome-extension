@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
+let  observer;
 
 chrome.storage.sync.get(
   ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
@@ -12,10 +13,16 @@ chrome.storage.sync.get(
  * Function fetches attributes from body tag and returns realtive data
  */
 function fetchAttributes() {
-  const prf = document.body.getAttribute('data-pageref');
-  const ct = document.body.getAttribute('data-contenttype');
-  const lcl = document.body.getAttribute('data-locale');
-  return [prf, ct, lcl];
+  const pageref = document.body.getAttribute('data-pageref');
+  const contentType = document.body.getAttribute('data-contenttype');
+  const locale = document.body.getAttribute('data-locale');
+  if (pageref && contentType && locale) {
+    return [pageref,contentType,locale]
+  }else {
+  const nodeAttr = document.querySelector('[data-contenttype]')
+    return nodeAttr?[nodeAttr.getAttribute('data-pageref'), nodeAttr.getAttribute('data-contenttype'), nodeAttr.getAttribute('data-locale')]:""
+  }
+  
 }
 
 /**
@@ -151,3 +158,19 @@ function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
     chrome.runtime.sendMessage({ action: 'active' });
   }
 }
+
+/**
+ * Function checks for mutation and try to create button based on changed value
+ */
+
+ observer = new MutationObserver(function() {
+  chrome.storage.sync.get(
+    ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
+    (items) => {
+      checkDomain(items.dom, items.stack, items.btn, items.btnPos, items.region);
+    }
+  );
+});
+observer.observe(document.body, { 
+  attributes: true, 
+  attributeFilter: ['data-contenttype'] });
