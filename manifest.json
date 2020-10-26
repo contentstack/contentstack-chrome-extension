@@ -1,8 +1,8 @@
 {
   "name": "Contentstack",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Quickly navigate from a live web page to its corresponding entry in Contentstack",
-  "permissions": ["activeTab", "declarativeContent", "storage", "tabs"],
+  "permissions": ["activeTab", "declarativeContent", "storage", "tabs", "downloads"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
