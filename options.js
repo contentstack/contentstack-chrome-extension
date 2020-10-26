@@ -465,6 +465,10 @@ function restoreOptions() {
     );
 }
 
+/**
+ * ImportConfig is triggered after import btn is clicked
+ * It call sub-functions which reades imported files
+ */
 function importConfig(event) {
     const input = event.target
     if ('files' in input && input.files.length > 0) {
@@ -497,6 +501,10 @@ function readFileContent(file) {
     })
 }
 
+/**
+ * exportConfig is triggered after export btn is clicked
+ * It exports contents from chrome storage and create a config.json file
+ */
 
 function exportConfig() {
 

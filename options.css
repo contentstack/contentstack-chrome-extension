@@ -751,6 +751,7 @@ aside {
     text-align: center;
     color: #fff;
     padding: 5px 10px;
+    cursor: pointer;
 }
 
 #save:hover {
@@ -764,7 +765,7 @@ aside {
     background-color: #fff;
 }
 
-.importDiv:hover {
+.importLabel:hover {
     cursor: pointer;
 }
 

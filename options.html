@@ -72,16 +72,18 @@
                 <input type="color" name="btnColor" id="btnColor" value="#5a20b9" placeholder="Enter a color">
 
                 <div id="status" class="section-footer">
-                    <span id="displayStatus"> 
-                        <img id="errorIcon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABaklEQVRIie2UvUoDQRSFz93sxFKMSVgEO1EsJXapxGLBmCLCvkIKzRsI4k+hhRBrXyC1BG19gdgoNmkTVtEkNoKSMBmLdcn+ZWciAZt83dx7z5y5y2GBGf8NqQ42cmVmZDv3APD6lt7afLgeqOg0VQMj814BkAeQN7KdA1Wd0gYt00qRxpsAFn9lH5reX12q1zsyrdIGlOBno8sBQCzwQfJYSSsbsAul9eGQHgHogRYXxDeW726e4vTSDcSQqu7lJ18vOP223VaChFaV6WMN2julXQGY7lknAhPepWm7be4V/mTQyJUZBC69tSQIOgW+qoarZ8tKTmzgxJLWvDUGAqOQZGX+k+9PZNAyrRSIDoN1nRyTMHRkF4tpZYNwLB0YCHqkwfjYhqZjYikjMrahDbyxDFLr91Dr98YZRMbWZxCMZZCu4OgKPq6NqNj6XyroPEaNylwmru2g4QLA7ejod5D+vORM444Z0+QHHJ9p4lkVJVUAAAAASUVORK5CYII="/>
-                            <span id="displayStatusRemark"></span></span>
-                            <button class="button button--primary" id="save">Save</button>
-                            <button id="exportBtn">Export</button>
-                           <div class="importDiv">
-                               <label for="importBtn" class="importLabel">
-                            <span class="importIcon" style='background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABJElEQVQ4jWNgoBAwwhh1p3aGy/Hyt3Mxs/5EV/T+5w+hb39+fi01cFRhYGT8hyzHAmcwM3K6y6gryvAIYNhy4uUDBhZGJoauC/vvl/3/r4hsCAuGahxAkU+YQYiDW44BzRAmYjRzs7IzHH5+j+H6+5cMvKzssjWnt1eT5AJdIUkGXSFJBgYGBoYnXz4wzr91+jFMjigX/McjR5QBc6+fYPj+5zdWOQwvHH/5gOHFt08oYk+/fGSYcuUwQ7SqMWED3v/8xvDy21cUsX8M/xl+//3H8P7XdwZ+Vg78BnjJaWHY0nfxAEO8uimDMAc3w5MvH/AbgA3k69kxMDNiDy6iAhGXZqINwAfgXvjz9//3nU9u3seWmZDBt7+/2f/8/f+dUovhAAAYTWGwbkHlQgAAAABJRU5ErkJggg==")'></span>
+                    <span id="displayStatus">
+                        <img id="errorIcon"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABaklEQVRIie2UvUoDQRSFz93sxFKMSVgEO1EsJXapxGLBmCLCvkIKzRsI4k+hhRBrXyC1BG19gdgoNmkTVtEkNoKSMBmLdcn+ZWciAZt83dx7z5y5y2GBGf8NqQ42cmVmZDv3APD6lt7afLgeqOg0VQMj814BkAeQN7KdA1Wd0gYt00qRxpsAFn9lH5reX12q1zsyrdIGlOBno8sBQCzwQfJYSSsbsAul9eGQHgHogRYXxDeW726e4vTSDcSQqu7lJ18vOP223VaChFaV6WMN2julXQGY7lknAhPepWm7be4V/mTQyJUZBC69tSQIOgW+qoarZ8tKTmzgxJLWvDUGAqOQZGX+k+9PZNAyrRSIDoN1nRyTMHRkF4tpZYNwLB0YCHqkwfjYhqZjYikjMrahDbyxDFLr91Dr98YZRMbWZxCMZZCu4OgKPq6NqNj6XyroPEaNylwmru2g4QLA7ejod5D+vORM444Z0+QHHJ9p4lkVJVUAAAAASUVORK5CYII=" />
+                        <span id="displayStatusRemark"></span></span>
+                    <button class="button button--primary" id="save">Save</button>
+                    <button id="exportBtn">Export</button>
+                    <div class="importDiv">
+                        <label for="importBtn" class="importLabel">
+                            <span class="importIcon"
+                                style='background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABJElEQVQ4jWNgoBAwwhh1p3aGy/Hyt3Mxs/5EV/T+5w+hb39+fi01cFRhYGT8hyzHAmcwM3K6y6gryvAIYNhy4uUDBhZGJoauC/vvl/3/r4hsCAuGahxAkU+YQYiDW44BzRAmYjRzs7IzHH5+j+H6+5cMvKzssjWnt1eT5AJdIUkGXSFJBgYGBoYnXz4wzr91+jFMjigX/McjR5QBc6+fYPj+5zdWOQwvHH/5gOHFt08oYk+/fGSYcuUwQ7SqMWED3v/8xvDy21cUsX8M/xl+//3H8P7XdwZ+Vg78BnjJaWHY0nfxAEO8uimDMAc3w5MvH/AbgA3k69kxMDNiDy6iAhGXZqINwAfgXvjz9//3nU9u3seWmZDBt7+/2f/8/f+dUovhAAAYTWGwbkHlQgAAAABJRU5ErkJggg==")'></span>
                             <span style="padding: 5px; padding-left: 2px;">Import</span></label>
-                            <input id="importBtn" type="file" style="visibility: hidden;"/></div>
+                        <input id="importBtn" type="file" style="visibility: hidden;" /></div>
                 </div>
             </div>
         </div>
