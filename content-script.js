@@ -64,8 +64,7 @@ function checkDomain(dom, stack, btn, btnPos, region) {
                 }
                 for (let x = 0; x < domain.length; x++) {
                     const hostRX = new RegExp(`^${domain[x]}$`);
-                    if (hostRX.test(host) && window.location.href.includes(domains[x])) {
-                      console.log(hostRX.test(host), hostRX);
+                    if (hostRX.test(host) && window.location.host.includes(host)) {
                         let bodyAttr = fetchAttributes();
                         if (!bodyAttr[0] || !bodyAttr[1] || !bodyAttr[2]) {
                             const checkAttr = setInterval(() => {

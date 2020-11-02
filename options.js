@@ -296,6 +296,9 @@ function fieldValidation(stack, region, domain) {
     validationFlag = checkArr.every((el) => el == true);
 }
 
+/**
+ * Function is fetches all the contents from fields and returns an Object containing all data
+ */
 
 function fetchFieldContents() {
 
@@ -354,7 +357,7 @@ function saveOptions() {
                 status.textContent = 'Settings saved successfully';
                 status.style.color = '#24c2a3';
                 setTimeout(() => {
-                    // window.close();
+                    window.close();
                 }, 750);
             }
         );
@@ -394,6 +397,10 @@ function saveOptions() {
         document.getElementById('errorIcon').style.display = 'inline-block';
     }
 }
+
+/**
+ * Function creates stack block containing all input fields
+ */
 
 function createFields(items) {
 
@@ -507,7 +514,7 @@ function readFileContent(file) {
  */
 
 function exportConfig() {
-
+console.log("export");
     const items = fetchFieldContents();
     const result = JSON.stringify(items);
     var url = 'data:application/json;base64,' + btoa(result);

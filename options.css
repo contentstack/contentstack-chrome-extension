@@ -224,34 +224,31 @@ aside {
 
 .section__panel ul li {
     padding-left: 22px;
-    margin-bottom: 2em;
     position: relative
 }
 
-.section__panel ul li:before {
+/* .section__panel ul li:before {
     content: "";
     display: block;
     position: absolute;
     width: 12px;
     height: 12px;
     left: 0;
-    background-color: #469638;
-    border-radius: 6px;
     top: 5px;
     font-size: 16px;
     font-weight: 500;
     line-height: 12px;
     color: #fff;
     text-align: center
-}
+} */
 
 .section__panel ul.list--chain li {
     padding-left: 40px;
-    margin-bottom: 2em;
+    /* margin-bottom: 2em; */
     position: relative
 }
 
-.section__panel ul.list--chain li:before {
+/* .section__panel ul.list--chain li:before {
     content: "";
     display: block;
     position: absolute;
@@ -280,7 +277,7 @@ aside {
 
 .section__panel ul.list--chain li:last-child:after {
     display: none
-}
+} */
 
 .section__panel ol {
     list-style: none;
@@ -733,18 +730,18 @@ aside {
     display: none;
 }
 
-.importIcon {
+.importIcon, .exportIcon {
     height: 16px;
     width: 16px;
     background-repeat: no-repeat;
     margin: 2px;
 }
 
-.importDiv, #exportBtn, #save {
+.importDiv, #save, .exportDiv {
     float: right;
     background: #24c2a3;
     border-radius: 3px;
-    margin-top: 17px;
+    /* margin-top: 17px; */
     margin-right: 32px;
     height: 32px;
     width: 85px;
@@ -758,20 +755,15 @@ aside {
     border-color: #24c2a3
 }
 
-.importDiv, .importLabel {
+.importDiv, .importLabel, .exportDiv, .exportLabel {
     display: flex;
     border: none;
     color: #24c2a3;
     background-color: #fff;
-}
-
-.importLabel:hover {
     cursor: pointer;
+    width: 80px;
 }
 
-#exportBtn {
-    border: none;
-}
 
 ::-webkit-scrollbar {
     width: 5px
@@ -820,29 +812,73 @@ aside {
     display: inline-block;
 }
 
-.dropdown-content {
-    display: none;
+/* Dropdown */
+
+.dropdown {
+    display: inline-block;
+    position: relative;
+    float: right;
+    right: 12px;
+    height: 32px;
+  }
+  
+  .dd-button {
+    display: inline-block;
+    border: 1px solid gray;
+    border-radius: 4px;
+    padding: 10px 30px 10px 20px;
+    background-color: #ffffff;
+    cursor: pointer;
+    white-space: nowrap;
+    height: 32px;
+  }
+  
+  .dd-button:after {
+    content: '';
     position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    z-index: 1;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+  }
+  
+  .dd-button:hover {
+    background-color: #eeeeee;
+  }
+  
+  
+  .dd-input {
+    display: none;
+  }
+  
+  .dd-menu {
+    position: absolute;
+    top: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0;
+    margin: 2px 0 0 0;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    list-style-type: none;
+  }
+  
+  .dd-input + .dd-menu {
+    display: none;
+  } 
+  
+  .dd-input:checked + .dd-menu {
     display: block;
-}
-
-.dropdown-content a:hover {
-    background-color: #ddd
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.btn:hover, .dropdown:hover .btn {
-    background-color: #0b7dda;
-}
+  } 
+  
+  .dd-menu li {
+    padding: 10px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    height: 40px;
+  }
+  
