@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
-let observer;
+
+let editBtn = document.getElementsByClassName('ext__cms__edit');
 
 chrome.storage.sync.get(
     ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
@@ -20,7 +21,7 @@ function fetchAttributes() {
         return [pageref, contentType, locale]
     } else {
         const nodeAttr = document.querySelector('[data-contenttype]')
-        return nodeAttr ? [nodeAttr.getAttribute('data-pageref'), nodeAttr.getAttribute('data-contenttype'), nodeAttr.getAttribute('data-locale')] : ""
+        return nodeAttr ? [nodeAttr.getAttribute('data-pageref'), nodeAttr.getAttribute('data-contenttype'), nodeAttr.getAttribute('data-locale')] : ''
     }
 
 }
@@ -73,6 +74,9 @@ function checkDomain(dom, stack, btn, btnPos, region) {
                                     clearInterval(checkAttr);
                                     buildBtn(csHost, stack, btn, btnPos, bodyAttr);
                                 }
+                                else if(editBtn.length != 0){
+                                    editBtn[0].remove
+                                }
                             }, 2000);
                         } else {
                             buildBtn(csHost, stack, btn, btnPos, bodyAttr);
@@ -103,6 +107,9 @@ function checkDomain(dom, stack, btn, btnPos, region) {
                                 clearInterval(checkAttr);
                                 buildBtn(csHost, stack[0], btn, btnPos, bodyAttr);
                             }
+                            else if(editBtn.length != 0){
+                                editBtn[0].remove
+                            }
                         }, 2000);
                     } else {
                         buildBtn(csHost, stack[0], btn, btnPos, bodyAttr);
@@ -132,7 +139,7 @@ function editContent(stack) {
  */
 
 function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
-    if (stack && bodyAttr[0] && bodyAttr[1] && bodyAttr[2]) {
+    if (stack && bodyAttr[0] && bodyAttr[1] && bodyAttr[2] && editBtn.length == 0) {
         const a = document.createElement('a');
         a.className = 'ext__cms__edit';
         a.innerHTML = 'Edit';
@@ -169,15 +176,20 @@ function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
 /**
  * Function checks for mutation and try to create button based on changed value
  */
-
 observer = new MutationObserver(function() {
-    chrome.storage.sync.get(
-        ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
-        (items) => {
-            checkDomain(items.dom, items.stack, items.btn, items.btnPos, items.region);
-        }
-    );
+    let bodyAttr = fetchAttributes();
+    if (!bodyAttr[0] || !bodyAttr[1] || !bodyAttr[2]) {
+        editBtn[0].remove();
+     }else{
+        chrome.storage.sync.get(
+            ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
+            (items) => {
+                checkDomain(items.dom, items.stack, items.btn, items.btnPos, items.region);
+            }
+        );
+    }
 });
+
 observer.observe(document.body, {
     attributes: true,
     attributeFilter: ['data-contenttype']
