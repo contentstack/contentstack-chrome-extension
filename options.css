@@ -205,10 +205,6 @@ aside {
     -webkit-box-sizing: border-box
 }
 
-/* .section__panel img {
-    width: 100%
-} */
-
 .section__panel>h1, .section__panel>h2, .section__panel>h3, .section__panel>h4 {
     margin-top: 0
 }
@@ -227,57 +223,10 @@ aside {
     position: relative
 }
 
-/* .section__panel ul li:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    left: 0;
-    top: 5px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 12px;
-    color: #fff;
-    text-align: center
-} */
-
 .section__panel ul.list--chain li {
     padding-left: 40px;
-    /* margin-bottom: 2em; */
     position: relative
 }
-
-/* .section__panel ul.list--chain li:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    left: 0;
-    background-color: #469638;
-    border-radius: 15px;
-    top: -4px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 30px;
-    color: #fff;
-    text-align: center
-}
-
-.section__panel ul.list--chain li:after {
-    content: " ";
-    display: block;
-    position: absolute;
-    left: 14.5px;
-    top: 26px;
-    border: 1px solid #469638;
-    height: 100%
-}
-
-.section__panel ul.list--chain li:last-child:after {
-    display: none
-} */
 
 .section__panel ol {
     list-style: none;
@@ -764,7 +713,6 @@ aside {
     width: 80px;
 }
 
-
 ::-webkit-scrollbar {
     width: 5px
 }
@@ -820,9 +768,9 @@ aside {
     float: right;
     right: 12px;
     height: 32px;
-  }
-  
-  .dd-button {
+}
+
+.dd-button {
     display: inline-block;
     border: 1px solid gray;
     border-radius: 4px;
@@ -831,54 +779,52 @@ aside {
     cursor: pointer;
     white-space: nowrap;
     height: 32px;
-  }
-  
-  .dd-button:after {
+}
+
+.dd-button:after {
     content: '';
     position: absolute;
     top: 50%;
     right: 15px;
     transform: translateY(-50%);
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 5px solid black;
-  }
-  
-  .dd-button:hover {
+}
+
+.dd-button:hover {
     background-color: #eeeeee;
-  }
-  
-  
-  .dd-input {
+}
+
+.dd-input {
     display: none;
-  }
-  
-  .dd-menu {
+}
+
+.dd-menu {
     position: absolute;
     top: 100%;
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 0;
     margin: 2px 0 0 0;
-    box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     list-style-type: none;
-  }
-  
-  .dd-input + .dd-menu {
+}
+
+.dd-input+.dd-menu {
     display: none;
-  } 
-  
-  .dd-input:checked + .dd-menu {
+}
+
+.dd-input:checked+.dd-menu {
     display: block;
-  } 
-  
-  .dd-menu li {
+}
+
+.dd-menu li {
     padding: 10px 20px;
     cursor: pointer;
     white-space: nowrap;
     height: 40px;
-  }
-  
+}
