@@ -218,10 +218,10 @@ aside {
     padding: 0
 }
 
-.section__panel ul li {
+/* .section__panel ul li {
     padding-left: 22px;
     position: relative
-}
+} */
 
 .section__panel ul.list--chain li {
     padding-left: 40px;
@@ -687,7 +687,7 @@ aside {
 }
 
 .importDiv, #save, .exportDiv {
-    float: right;
+    /* float: right; */
     background: #24c2a3;
     border-radius: 3px;
     /* margin-top: 17px; */
@@ -700,6 +700,17 @@ aside {
     cursor: pointer;
 }
 
+#importBtn, #exportBtn {
+    height: 16px;
+    width: 100px;
+    padding: 0;
+    margin: 0;
+}
+
+#save {
+    float: right;
+}
+
 #save:hover {
     border-color: #24c2a3
 }
@@ -707,10 +718,9 @@ aside {
 .importDiv, .importLabel, .exportDiv, .exportLabel {
     display: flex;
     border: none;
-    color: #24c2a3;
+    color: #707070;
     background-color: #fff;
     cursor: pointer;
-    width: 80px;
 }
 
 ::-webkit-scrollbar {
@@ -766,19 +776,19 @@ aside {
     display: inline-block;
     position: relative;
     float: right;
-    right: 12px;
-    height: 32px;
+    margin-top: -50px;
 }
 
 .dd-button {
     display: inline-block;
-    border: 1px solid gray;
-    border-radius: 4px;
-    padding: 10px 30px 10px 20px;
-    background-color: #ffffff;
+    /* border: 1px solid gray; */
+    /* border-radius: 4px; */
+    padding: 5px 30px 10px 20px;
+    /* background-color: #ffffff; */
     cursor: pointer;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     height: 32px;
+    background-repeat: no-repeat;
 }
 
 .dd-button:after {
@@ -791,11 +801,12 @@ aside {
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-top: 5px solid black;
+    border-top: 5px solid #DCDCDC;
 }
 
-.dd-button:hover {
-    background-color: #eeeeee;
+.dd-button img {
+    height: 24px;
+    width: 24px;
 }
 
 .dd-input {
@@ -806,12 +817,12 @@ aside {
     position: absolute;
     top: 100%;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0;
     margin: 2px 0 0 0;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     list-style-type: none;
+    width: 200px;
+    right: 12px;
+    z-index: 99;
 }
 
 .dd-input+.dd-menu {
@@ -823,8 +834,6 @@ aside {
 }
 
 .dd-menu li {
-    padding: 10px 20px;
     cursor: pointer;
     white-space: nowrap;
-    height: 40px;
 }

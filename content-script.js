@@ -1,12 +1,11 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
-
 let editBtn = document.getElementsByClassName('ext__cms__edit');
 
 chrome.storage.sync.get(
-    ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
-    (items) => {
-        checkDomain(items.dom, items.stack, items.btn, items.btnPos, items.region);
+    ['stack', 'type', 'btnColor', 'btnPos', 'watch', 'delay']
+    , (items) => {
+        checkDomain(items.stack, items.btnColor, items.btnPos);
     }
 );
 
@@ -30,93 +29,89 @@ function fetchAttributes() {
  * Function compares url provided in stack block with active tab
  * if true it create navigation button on webpage
  */
-function checkDomain(dom, stack, btn, btnPos, region) {
+function checkDomain(stack, btn, btnPos) {
     let domains;
-    if (dom) {
-        domains = dom.map((el) => {
-            const domArr = el.split(',');
-            return domArr.map((elms) => {
-                if (elms.includes('http') || elms.includes('https')) {
-                    const newDomain = elms.trim();
-                    return new URL(newDomain).host;
-                }
-                return elms.trim();
-            });
-        });
-    }
+    domains = stack.map(el => {
+        const domArr = el.domain.split(',');
+        return domArr.map((elms) => {
+            if (elms.includes('http') || elms.includes('https')) {
+                const newDomain = elms.trim();
+                return new URL(newDomain).host;
+            }
+
+            return elms.trim();
+        })
+    })
+
     const {
         host
     } = window.location;
 
     const stacks = stack;
-    if (stacks) {
-        if (stacks.length > 1) {
-            stacks.forEach((stack, idx) => {
-                const domain = domains[idx].map((d) => d.toString().replace(/[`~!@#$%^&*()|+\=?;'",<>\{\}\[\]\\\/]/gi, ''));
-                let csHost;
-
-                if (region[idx].select === 'CR') {
-                    csHost = region[idx].customData;
-                    if (csHost.includes('http') || csHost.includes('https')) {
-                        csHost = new URL(csHost).host;
-                    }
-                } else {
-                    csHost = region[idx].select;
-                }
-                for (let x = 0; x < domain.length; x++) {
-                    const hostRX = new RegExp(`^${domain[x]}$`);
-                    if (hostRX.test(host) && window.location.host.includes(host)) {
-                        let bodyAttr = fetchAttributes();
-                        if (!bodyAttr[0] || !bodyAttr[1] || !bodyAttr[2]) {
-                            const checkAttr = setInterval(() => {
-                                bodyAttr = fetchAttributes();
-                                if (bodyAttr[0] && bodyAttr[1] && bodyAttr[2]) {
-                                    clearInterval(checkAttr);
-                                    buildBtn(csHost, stack, btn, btnPos, bodyAttr);
-                                }
-                                else if(editBtn.length != 0){
-                                    editBtn[0].remove
-                                }
-                            }, 2000);
-                        } else {
-                            buildBtn(csHost, stack, btn, btnPos, bodyAttr);
-                        }
-                        return;
-                    }
-                }
-            });
-        } else {
-            const domain = domains[0].map((d) => d.toString().replace(/[`~!@#$%^&*()|+\=?;'",<>\{\}\[\]\\\/]/gi, ''));
+    if (stacks.length > 1) {
+        stacks.forEach((stack, idx) => {
+            const domain = domains[idx].map((d) => d.toString().replace(/[`~!@#$%^&*()|+\=?;'",<>\{\}\[\]\\\/]/gi, ''));
             let csHost;
-            if (region[0].select === 'CR') {
-                csHost = region[0].customData;
+
+            if (stack.region.select === 'CR') {
+                csHost = stack.region.customUrl;
                 if (csHost.includes('http') || csHost.includes('https')) {
                     csHost = new URL(csHost).host;
                 }
             } else {
-                csHost = region[0].select;
+                csHost = stack.region.select;
             }
             for (let x = 0; x < domain.length; x++) {
                 const hostRX = new RegExp(`^${domain[x]}$`);
-                if (hostRX.test(host)) {
+                if (hostRX.test(host) && window.location.host.includes(host)) {
                     let bodyAttr = fetchAttributes();
                     if (!bodyAttr[0] || !bodyAttr[1] || !bodyAttr[2]) {
                         const checkAttr = setInterval(() => {
                             bodyAttr = fetchAttributes();
                             if (bodyAttr[0] && bodyAttr[1] && bodyAttr[2]) {
                                 clearInterval(checkAttr);
-                                buildBtn(csHost, stack[0], btn, btnPos, bodyAttr);
-                            }
-                            else if(editBtn.length != 0){
+                                buildBtn(csHost, stack, btn, btnPos, bodyAttr);
+                            } else if (editBtn.length != 0) {
                                 editBtn[0].remove
                             }
                         }, 2000);
                     } else {
-                        buildBtn(csHost, stack[0], btn, btnPos, bodyAttr);
+                        buildBtn(csHost, stack, btn, btnPos, bodyAttr);
                     }
-
                     return;
                 }
+            }
+        });
+    } else {
+        const domain = domains[0].map((d) => d.toString().replace(/[`~!@#$%^&*()|+\=?;'",<>\{\}\[\]\\\/]/gi, ''));
+        let csHost;
+        if (stack[0].region.select === 'CR') {
+            csHost = stack[0].region.customUrl;
+            if (csHost.includes('http') || csHost.includes('https')) {
+                csHost = new URL(csHost).host;
+            }
+        } else {
+            csHost = stack[0].region.select;
+        }
+        for (let x = 0; x < domain.length; x++) {
+            const hostRX = new RegExp(`^${domain[x]}$`);
+            if (hostRX.test(host)) {
+                let bodyAttr = fetchAttributes();
+                if (!bodyAttr[0] || !bodyAttr[1] || !bodyAttr[2]) {
+                    const checkAttr = setInterval(() => {
+                        bodyAttr = fetchAttributes();
+                        if (bodyAttr[0] && bodyAttr[1] && bodyAttr[2]) {
+                            clearInterval(checkAttr);
+                            buildBtn(csHost, stack[0], btn, btnPos, bodyAttr);
+                        } else if (editBtn.length != 0) {
+                            editBtn[0].remove
+                        }
+                    }, 2000);
+                } else {
+                    buildBtn(csHost, stack[0], btn, btnPos, bodyAttr);
+                }
+
+                return;
             }
         }
     }
@@ -129,8 +124,8 @@ function checkDomain(dom, stack, btn, btnPos, region) {
 
 function editContent(stack) {
     chrome.runtime.sendMessage({
-        type: 'clicked',
-        data: stack
+        type: 'clicked'
+        , data: stack
     });
 }
 
@@ -151,7 +146,7 @@ function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
         a.href = `https://${
       csHost
     }/#!/stack/${
-      stack
+      stack.apikey
     }/content-type/${
       bodyAttr[1]
     }/${
@@ -176,21 +171,21 @@ function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
 /**
  * Function checks for mutation and try to create button based on changed value
  */
-observer = new MutationObserver(function() {
+observer = new MutationObserver(function () {
     let bodyAttr = fetchAttributes();
     if (!bodyAttr[0] || !bodyAttr[1] || !bodyAttr[2]) {
         editBtn[0].remove();
-     }else{
+    } else {
         chrome.storage.sync.get(
-            ['dom', 'stack', 'type', 'btn', 'btnPos', 'region', 'watch', 'delay'],
-            (items) => {
-                checkDomain(items.dom, items.stack, items.btn, items.btnPos, items.region);
+            ['stack', 'type', 'btnColor', 'btnPos', 'watch', 'delay']
+            , (items) => {
+                checkDomain(items.stack, items.btnColor, items.btnPos);
             }
         );
     }
 });
 
 observer.observe(document.body, {
-    attributes: true,
-    attributeFilter: ['data-contenttype']
+    attributes: true
+    , attributeFilter: ['data-contenttype']
 });

@@ -1,8 +1,5 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
-let storeApikey = [];
-let saveBtnFlag = false;
-let apikeySend = false;
 let validationFlag = false;
 
 function focusEvent(evt) {
@@ -128,16 +125,16 @@ function addApikey() {
     let ipt;
 
     lbl = {
-        for: 'stackId',
-        class: 'stack-label',
-        text: 'Stack API Key'
+        for: 'stackId'
+        , class: 'stack-label'
+        , text: 'Stack API Key'
     };
     ipt = {
-        name: 'stackId',
-        class: 'stackId',
-        holder: 'API key',
-        title: 'Enter your stack API key',
-    };
+        name: 'stackId'
+        , class: 'stackId'
+        , holder: 'API key'
+        , title: 'Enter your stack API key'
+    , };
     const borderDiv = document.createElement('div');
     borderDiv.className = 'apikey-block';
     const stackDetails = createApiBlock(lbl, ipt);
@@ -160,16 +157,16 @@ function addApikey() {
     borderDiv.appendChild(cntRemove);
     borderDiv.appendChild(cntDiv);
     lbl = {
-        for: 'domains',
-        class: 'domain-label',
-        text: 'Domain Name or Host',
-    };
+        for: 'domains'
+        , class: 'domain-label'
+        , text: 'Domain Name or Host'
+    , };
     ipt = {
-        name: 'domains',
-        class: 'domains',
-        holder: 'example.com, localhost:3000',
-        title: 'Enter your domain names seprated by ,',
-    };
+        name: 'domains'
+        , class: 'domains'
+        , holder: 'example.com, localhost:3000'
+        , title: 'Enter your domain names seprated by ,'
+    , };
     const domainsDetails = createApiBlock(lbl, ipt);
     cntDiv = document.createElement('div');
     cntDiv.className = 'container';
@@ -199,17 +196,17 @@ function addApikey() {
 function createApiBlock(lbl, ipt) {
     const label = document.createElement('Label');
     Object.assign(label, {
-        for: lbl.for,
-        innerText: lbl.text,
-        className: lbl.class,
-    });
+        for: lbl.for
+        , innerText: lbl.text
+        , className: lbl.class
+    , });
     const input = document.createElement('input');
     Object.assign(input, {
-        name: ipt.name,
-        className: ipt.class,
-        placeholder: ipt.holder,
-        title: ipt.title,
-    });
+        name: ipt.name
+        , className: ipt.class
+        , placeholder: ipt.holder
+        , title: ipt.title
+    , });
     return [label, input];
 }
 
@@ -281,19 +278,27 @@ function regionCheck(region, idx, select) {
 
 /**
  * Function validates fields in stack block
- * @param {*apikey value from all stack block} stack
- * @param {*region field value from all stack block} region
- * @param {*url from domain field from all stack block} domain
+ * @param {*stack is an array of obj which contains apiKey domain and region value} stack
  */
 
-function fieldValidation(stack, region, domain) {
-    const checkArr = stack.map((stack, index) => {
-        const dr = domainCheck(domain[index], index);
-        const rr = regionCheck(region[index].customData, index, region[index].select);
-        const sr = stackCheck(stack, index);
+function fieldValidation(stack) {
+    const checkArr = stack.map((obj, index) => {
+        const dr = domainCheck(obj.domain, index);
+        const rr = regionCheck(obj.region.customUrl, index, obj.region.select);
+        const sr = stackCheck(obj.apiKey, index);
         return (dr.every((dm) => dm === true) == rr) == sr;
     });
     validationFlag = checkArr.every((el) => el == true);
+}
+
+function create_UUID() {
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (dt + Math.random() * 16) % 16 | 0;
+        dt = Math.floor(dt / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
 }
 
 /**
@@ -301,35 +306,38 @@ function fieldValidation(stack, region, domain) {
  */
 
 function fetchFieldContents() {
-
-    let stackId = Array.from(document.getElementsByClassName('stackId'));
-    stackId = stackId.map((el) => el.value);
     const btnColor = document.getElementById('btnColor').value;
     const btnPos = document.getElementById('btnPos')[
         document.getElementById('btnPos').selectedIndex
     ].value;
+    let stackId = Array.from(document.getElementsByClassName('stackId'));
     let regions = Array.from(document.getElementsByClassName('regionSelect'));
-    const newArr = [];
-    regions.forEach((regionValue) => {
-        const obj = {};
-        obj.select = regionValue.value;
-        if (regionValue.nextElementSibling.childNodes[2].nodeName === 'INPUT') {
-            obj.customData = regionValue.nextElementSibling.childNodes[2].value;
-        } else {
-            obj.customData = regionValue.nextElementSibling.childNodes[5].value;
-        }
-
-        newArr.push(obj);
-    });
-    regions = newArr;
     let domains = Array.from(document.getElementsByClassName('domains'));
-    domains = domains.map((el) => el.value);
+    let stack = regions.map((item, idx) => {
+        let regionObj = {};
+        regionObj.select = item.value;
+        if (item.nextElementSibling.childNodes[2].nodeName === 'INPUT') {
+            regionObj.customUrl = item.nextElementSibling.childNodes[2].value;
+            return {
+                uid: create_UUID()
+                , apiKey: stackId[idx].value
+                , domain: domains[idx].value
+                , region: regionObj
+            }
+        } else {
+            regionObj.customUrl = item.nextElementSibling.childNodes[5].value;
+            return {
+                uid: create_UUID()
+                , apiKey: stackId[idx].value
+                , domain: domains[idx].value
+                , region: regionObj
+            }
+        }
+    })
     return {
-        stack: stackId,
-        btn: btnColor,
-        btnPos,
-        dom: domains,
-        region: regions
+        btnColor
+        , btnPos
+        , stack
     }
 }
 
@@ -340,18 +348,17 @@ function fetchFieldContents() {
 function saveOptions() {
 
     const items = fetchFieldContents();
+    console.log(items);
 
-    fieldValidation(items.stack, items.region, items.dom);
+    fieldValidation(items.stack);
 
     if (validationFlag) {
         chrome.storage.sync.set({
-                stack: items.stack,
-                btn: items.btn,
-                btnPos: items.btnPos,
-                dom: items.dom,
-                region: items.region,
-            },
-            () => {
+                stack: items.stack
+                , btnColor: items.btnColor
+                , btnPos: items.btnPos
+            , }
+            , () => {
                 document.getElementById('errorIcon').style.display = 'none';
                 const status = document.getElementById('displayStatusRemark');
                 status.textContent = 'Settings saved successfully';
@@ -361,39 +368,37 @@ function saveOptions() {
                 }, 750);
             }
         );
-
-        items.stack.forEach((el) => {
-            if (!storeApikey.includes(el)) {
-                saveBtnFlag = true;
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'Api Key',
-                    eventAction: 'Saved',
-                    eventLabel: `${el}`,
-                });
-            } else if (storeApikey.length !== items.stack.length && !apikeySend) {
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'Api Key',
-                    eventAction: 'Saved',
-                    eventLabel: `${el}`,
-                });
-                apikeySend = true;
-                saveBtnFlag = true;
+        chrome.storage.sync.get({
+                stack: []
+                , btn: '#5a20b9'
+                , btnPos: 'right'
+            , }
+            , (getItems) => {
+                if (getItems.stack.length != items.stack.length) {
+                    const index = Math.abs(getItems.stack.length - items.stack.length)
+                    const newApikey = index != 0 ? getItems.filter(prevVal => !items.find(curVal => prevVal.uid === curVal.uid)) : [];
+                    newApikey ? newApikey.forEach(stack => {
+                        ga('send', {
+                            hitType: 'event'
+                            , eventCategory: 'Api Key'
+                            , eventAction: 'Saved'
+                            , eventLabel: `${stack.apiKey}`
+                        , });
+                    }) : null
+                } else {
+                    ga('send', {
+                        hitType: 'event'
+                        , eventCategory: 'Api Key'
+                        , eventAction: 'Saved'
+                        , eventLabel: `${items.stack[items.stack.length-1].apiKey}`
+                    , });
+                }
             }
-        });
-        if (!saveBtnFlag) {
-            ga('send', {
-                hitType: 'event',
-                eventCategory: 'Api Key',
-                eventAction: 'Saved',
-                eventLabel: `${items.stack[items.stack.length - 1]}`,
-            });
-        }
+        );
     } else {
         const status = document.getElementById('displayStatusRemark');
         status.textContent = 'Please enter valid inputs';
-        status.color = '#e44952';
+        status.style.color = '#e44952';
         document.getElementById('errorIcon').style.display = 'inline-block';
     }
 }
@@ -403,53 +408,45 @@ function saveOptions() {
  */
 
 function createFields(items) {
-
-    if (items.stack.length > 1) {
-        for (let i = 1; i < items.stack.length; i++) {
-            addApikey();
-        }
-        storeApikey = items.stack;
-        Array.from(document.getElementsByClassName('stackId')).forEach(
-            (element, idx) => {
-                element.value = items.stack[idx];
-            }
-        );
-        Array.from(document.getElementsByClassName('domains')).forEach(
-            (element, idx) => {
-                element.value = items.dom[idx];
-            }
-        );
-        Array.from(document.getElementsByClassName('regionSelect')).forEach(
-            (element, idx) => {
-                element.value = items.region[idx].select;
-                if (items.region[idx].select === 'CR') {
-                    element.nextElementSibling.style.display = 'block';
-                    element.parentNode.style.top = '16px';
-                    element.parentNode.parentNode.style.height = '398px';
-                    if (
-                        element.nextElementSibling.childNodes[2].nodeName === 'INPUT'
-                    ) {
-                        element.nextElementSibling.childNodes[2].value = items.region[idx].customData;
-                    } else {
-                        element.nextElementSibling.childNodes[5].value = items.region[idx].customData;
-                    }
+    console.log("create fields", items);
+    if (items.stack.length !== 1) {
+        items.stack.forEach((stack, idx) => {
+            console.log(stack);
+            items.stack.length - 1 != idx ? addApikey() : null
+            Array.from(document.getElementsByClassName('stackId'))[idx].value = stack.apiKey;
+            Array.from(document.getElementsByClassName('domains'))[idx].value = stack.domain;
+            const region = Array.from(document.getElementsByClassName('regionSelect'))[idx]
+            region.value = stack.region.select;
+            if (stack.region.select === 'CR') {
+                region.nextElementSibling.style.display = 'block';
+                region.parentNode.style.top = '16px';
+                region.parentNode.parentNode.style.height = '398px';
+                if (
+                    region.nextElementSibling.childNodes[2].nodeName === 'INPUT'
+                ) {
+                    region.nextElementSibling.childNodes[2].value = stack.region.customUrl;
+                } else {
+                    region.nextElementSibling.childNodes[5].value = stack.region.customUrl;
                 }
             }
-        );
-    } else if (items.stack[0]) {
-        document.getElementById('stackKeyId').value = items.stack[0];
-        document.getElementById('domainKeyId').value = items.dom[0];
-        document.getElementById('slt-rgn').value = items.region[0].select;
-        if (items.region[0].select === 'CR') {
+        })
+    } else {
+        document.getElementById('stackKeyId').value = items.stack[0].apiKey;
+        document.getElementById('domainKeyId').value = items.stack[0].domain;
+        document.getElementById('slt-rgn').value = items.stack[0].region.select;
+        if (items.stack[0].region.select === 'CR') {
             document.getElementById('region-div').style.display = 'block';
             document.getElementById('regionSetting').style.top = '16px';
             document.getElementById('apiBlock').style.height = '398px';
-            document.getElementById('regionId').value = items.region[0].customData;
+            document.getElementById('regionId').value = items.stack[0].region.customUrl;
         }
     }
-    document.getElementById('btnColor').value = items.btn;
+
+    document.getElementById('btnColor').value = items.btnColor;
     document.getElementById('btnPos').value = items.btnPos;
 }
+
+
 
 
 /**
@@ -460,13 +457,11 @@ function createFields(items) {
 function restoreOptions() {
 
     chrome.storage.sync.get({
-            stack: '',
-            dom: '',
-            btn: '#5a20b9',
-            btnPos: 'right',
-            region: '',
-        },
-        (items) => {
+            stack: []
+            , btnColor: '#5a20b9'
+            , btnPos: 'right'
+        , }
+        , (items) => {
             createFields(items)
         }
     );
@@ -488,14 +483,14 @@ function placeFileContent(file) {
     readFileContent(file).then(cont => {
         let content = JSON.parse(cont);
         const items = fetchFieldContents();
-        for (const key in items) {
-            if (Array.isArray(items[key])) {
-                items[key] = items[key].concat(content[key]);
-            } else {
-                items[key] = content[key];
-            }
-        }
-        createFields(items);
+        console.log(content, items);
+        let stack = content.stack.filter(prevVal => !items.stack.find(curVal => prevVal.uid === curVal.uid))
+        console.log(stack);
+        createFields({
+            btnColor: content.btnColor
+            , btnPos: content.btnPos
+            , stack
+        });
     }).catch(error => console.log(error))
 }
 
@@ -514,13 +509,13 @@ function readFileContent(file) {
  */
 
 function exportConfig() {
-console.log("export");
+    console.log("export");
     const items = fetchFieldContents();
     const result = JSON.stringify(items);
     var url = 'data:application/json;base64,' + btoa(result);
     chrome.downloads.download({
-        url: url,
-        filename: 'config.json'
+        url: url
+        , filename: 'contentstack-configuration.json'
     });
 }
 
