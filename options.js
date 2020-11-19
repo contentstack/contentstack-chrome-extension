@@ -348,7 +348,6 @@ function fetchFieldContents() {
 function saveOptions() {
 
     const items = fetchFieldContents();
-    console.log(items);
 
     fieldValidation(items.stack);
 
@@ -408,10 +407,8 @@ function saveOptions() {
  */
 
 function createFields(items) {
-    console.log("create fields", items);
     if (items.stack.length !== 1) {
         items.stack.forEach((stack, idx) => {
-            console.log(stack);
             items.stack.length - 1 != idx ? addApikey() : null
             Array.from(document.getElementsByClassName('stackId'))[idx].value = stack.apiKey;
             Array.from(document.getElementsByClassName('domains'))[idx].value = stack.domain;
@@ -483,9 +480,7 @@ function placeFileContent(file) {
     readFileContent(file).then(cont => {
         let content = JSON.parse(cont);
         const items = fetchFieldContents();
-        console.log(content, items);
         let stack = content.stack.filter(prevVal => !items.stack.find(curVal => prevVal.uid === curVal.uid))
-        console.log(stack);
         createFields({
             btnColor: content.btnColor
             , btnPos: content.btnPos
@@ -509,7 +504,6 @@ function readFileContent(file) {
  */
 
 function exportConfig() {
-    console.log("export");
     const items = fetchFieldContents();
     const result = JSON.stringify(items);
     var url = 'data:application/json;base64,' + btoa(result);
@@ -517,6 +511,34 @@ function exportConfig() {
         url: url
         , filename: 'contentstack-configuration.json'
     });
+}
+document.onload = function(){
+    const chrome =chrome.runtime.getManifest()
+    if(chrome.version != "1.1.4"){
+      chrome.storage.sync.get({
+            stack: '',
+            dom: '',
+            btn: '#5a20b9',
+            btnPos: 'right',
+            region: '',
+        },(prev)=>{
+            let stack = prev.region.map((el ,idx)=>{
+                return {
+                    uid:create_UUID(),
+                    apiKey:prev.stack[idx],
+                    domain: prev.dom[idx],
+                    region:el
+                }
+            })
+            let next = {stack,btnColor:prev.btn, btnPos:prev.btnPos}
+            chrome.storage.sync.set({
+                stack: next.stack
+                , btnColor: next.btnColor
+                , btnPos: next.btnPos
+            , })
+        })
+        
+    }
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);

@@ -687,10 +687,8 @@ aside {
 }
 
 .importDiv, #save, .exportDiv {
-    /* float: right; */
     background: #24c2a3;
     border-radius: 3px;
-    /* margin-top: 17px; */
     margin-right: 32px;
     height: 32px;
     width: 85px;
@@ -781,12 +779,8 @@ aside {
 
 .dd-button {
     display: inline-block;
-    /* border: 1px solid gray; */
-    /* border-radius: 4px; */
     padding: 5px 30px 10px 20px;
-    /* background-color: #ffffff; */
     cursor: pointer;
-    /* white-space: nowrap; */
     height: 32px;
     background-repeat: no-repeat;
 }
