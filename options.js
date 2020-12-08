@@ -407,9 +407,10 @@ function saveOptions() {
  */
 
 function createFields(items) {
-    if (items.stack.length !== 1) {
+    // if (items.stack.length !== 1) {
         items.stack.forEach((stack, idx) => {
-            items.stack.length - 1 != idx ? addApikey() : null
+            
+            idx != 0? addApikey():null 
             Array.from(document.getElementsByClassName('stackId'))[idx].value = stack.apiKey;
             Array.from(document.getElementsByClassName('domains'))[idx].value = stack.domain;
             const region = Array.from(document.getElementsByClassName('regionSelect'))[idx]
@@ -427,17 +428,17 @@ function createFields(items) {
                 }
             }
         })
-    } else {
-        document.getElementById('stackKeyId').value = items.stack[0].apiKey;
-        document.getElementById('domainKeyId').value = items.stack[0].domain;
-        document.getElementById('slt-rgn').value = items.stack[0].region.select;
-        if (items.stack[0].region.select === 'CR') {
-            document.getElementById('region-div').style.display = 'block';
-            document.getElementById('regionSetting').style.top = '16px';
-            document.getElementById('apiBlock').style.height = '398px';
-            document.getElementById('regionId').value = items.stack[0].region.customUrl;
-        }
-    }
+    // } else {
+    //     document.getElementById('stackKeyId').value = items.stack[0].apiKey;
+    //     document.getElementById('domainKeyId').value = items.stack[0].domain;
+    //     document.getElementById('slt-rgn').value = items.stack[0].region.select;
+    //     if (items.stack[0].region.select === 'CR') {
+    //         document.getElementById('region-div').style.display = 'block';
+    //         document.getElementById('regionSetting').style.top = '16px';
+    //         document.getElementById('apiBlock').style.height = '398px';
+    //         document.getElementById('regionId').value = items.stack[0].region.customUrl;
+    //     }
+    // }
 
     document.getElementById('btnColor').value = items.btnColor;
     document.getElementById('btnPos').value = items.btnPos;
@@ -480,12 +481,27 @@ function placeFileContent(file) {
     readFileContent(file).then(cont => {
         let content = JSON.parse(cont);
         const items = fetchFieldContents();
-        let stack = content.stack.filter(prevVal => !items.stack.find(curVal => prevVal.uid === curVal.uid))
+        let stack = content.stack.concat(items.stack)
+
+        stack = stack.filter(
+            (element, idx, arr) =>
+              idx === arr.findIndex((elm) => elm.uid === element.uid && elm.apiKey !='')
+          );
+          Array.from(document.getElementsByClassName('apikey-block')).forEach((el,idx)=> idx!=0 ? el.remove():null)
         createFields({
             btnColor: content.btnColor
-            , btnPos: content.btnPos
+            , btnPos: content.btnPos == 'right' || content.btnPos == 'left' ? content.btnPos : 'right'
             , stack
         });
+
+        let importfile = document.getElementsByClassName('displayExportStatus')[0];
+        importfile.style.display = 'block'
+        importfile.innerText = 'Imported File Successfully'
+
+    document.getElementsByClassName('dd-menu')[0].style.display = "none"
+        setTimeout(function () {
+            document.getElementsByClassName('displayExportStatus')[0].style.display = "none"
+        }, 5000)
     }).catch(error => console.log(error))
 }
 
@@ -511,36 +527,52 @@ function exportConfig() {
         url: url
         , filename: 'contentstack-configuration.json'
     });
+
+    let exportfile = document.getElementsByClassName('displayExportStatus')[0];
+    exportfile.style.display = 'block'
+    exportfile.innerText = 'Exported File Successfully'
+
+    document.getElementsByClassName('dd-menu')[0].style.display = "none"
+    setTimeout(function () {
+        document.getElementsByClassName('displayExportStatus')[0].style.display = "none"
+    }, 5000)
 }
-document.onload = function(){
-    const chrome =chrome.runtime.getManifest()
-    if(chrome.version != "1.1.4"){
-      chrome.storage.sync.get({
-            stack: '',
-            dom: '',
-            btn: '#5a20b9',
-            btnPos: 'right',
-            region: '',
-        },(prev)=>{
-            let stack = prev.region.map((el ,idx)=>{
+document.onload = function () {
+    const chrome = chrome.runtime.getManifest()
+    if (chrome.version != "1.1.4") {
+        chrome.storage.sync.get({
+            stack: ''
+            , dom: ''
+            , btn: '#5a20b9'
+            , btnPos: 'right'
+            , region: ''
+        , }, (prev) => {
+            let stack = prev.region.map((el, idx) => {
                 return {
-                    uid:create_UUID(),
-                    apiKey:prev.stack[idx],
-                    domain: prev.dom[idx],
-                    region:el
+                    uid: create_UUID()
+                    , apiKey: prev.stack[idx]
+                    , domain: prev.dom[idx]
+                    , region: el
                 }
             })
-            let next = {stack,btnColor:prev.btn, btnPos:prev.btnPos}
+            let next = {
+                stack
+                , btnColor: prev.btn
+                , btnPos: prev.btnPos
+            }
             chrome.storage.sync.set({
                 stack: next.stack
                 , btnColor: next.btnColor
                 , btnPos: next.btnPos
             , })
         })
-        
+
     }
 }
-
+function disableDropdown(){
+    document.getElementsByClassName('dd-menu')[0].style.display = "block"
+}
+document.querySelector('.dd-button').addEventListener('click', disableDropdown)
 document.addEventListener('DOMContentLoaded', restoreOptions);
 document.getElementById('save').addEventListener('click', saveOptions);
 document.getElementById('stack-api-btn').addEventListener('click', addApikey);

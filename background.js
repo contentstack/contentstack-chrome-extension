@@ -30,6 +30,12 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+chrome.runtime.onMessage.addListener(data => {
+    if (data.type === 'notification') {
+        chrome.notifications.create('', data.options);
+    }
+  });
+
 chrome.runtime.onInstalled.addListener((details) => {
     chrome.runtime.onMessage.addListener(
         (request, sender) => {
