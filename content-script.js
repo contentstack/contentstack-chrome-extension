@@ -23,8 +23,7 @@ function fetchAttributes() {
             contentType: element.dataset.contenttype
             , entryUID: element.dataset.pageref
             , title: element.dataset.contenttype_title ?
-                dataset.contenttype_title :
-                undefined
+                dataset.contenttype_title : undefined
             , default: element.dataset.setDefault ? true : false
         , };
     });
@@ -98,12 +97,10 @@ function editContent(stack) {
     , });
 }
 
-function listSelect(evt){
-  console.log(evt,evt.target.dataset);
-const atag =document.getElementsByClassName('ext__cms__edit')[0];
-atag.href = evt.target.dataset.setUrl;
-document.getElementsByClassName('csExListUL')[0].style.display='none';
-
+function listSelect(evt) {
+    const atag = document.getElementsByClassName('ext__cms__edit')[0];
+    atag.href = evt.target.dataset.setUrl;
+    document.getElementsByClassName('csExListUL')[0].style.display = 'none';
 }
 
 /**
@@ -111,7 +108,6 @@ document.getElementsByClassName('csExListUL')[0].style.display='none';
  */
 
 function buildBtn(csHost, stack, btnColor, btnPos, entryList) {
-    console.log(csHost, stack, entryList);
     if (editBtn.length == 0) {
         const editElement = document.createElement('div')
         let defaultEdit = entryList.dataAttributes.find(elm => elm.default === true)
@@ -144,7 +140,7 @@ function buildBtn(csHost, stack, btnColor, btnPos, entryList) {
 
         aTag.style.backgroundColor = btnColor;
         aTag.setAttribute("target", "blank");
-        aTag.className='csExEdit csExEditBtn ext__cms__edit'
+        aTag.className = 'csExEdit csExEditBtn ext__cms__edit'
         aTag.href = `https://${csHost}/#!/stack/${stack.apiKey}/content-type/${defaultEdit.contentType}/${entryList.dataLocale}/entry/${defaultEdit.entryUID}/edit`;
         editElement.appendChild(aTag);
         const listElement = document.createElement('div');
@@ -156,9 +152,9 @@ function buildBtn(csHost, stack, btnColor, btnPos, entryList) {
         const dropdownUl = document.createElement('ul');
         dropdownUl.classList = 'csExListUL'
         // dropdownUl.onmouseout= function(){dropdownUl.style.display=='none'}
-        dropdownBtn.addEventListener('click',function(){
-          dropdownUl.style.display= dropdownUl.style.display ==='block'?'none':'block'
-          // dropdownUl.style.display=='block'
+        dropdownBtn.addEventListener('click', function () {
+            dropdownUl.style.display = dropdownUl.style.display === 'block' ? 'none' : 'block'
+            // dropdownUl.style.display=='block'
         })
         entryList.dataAttributes.forEach(list => {
             let element = document.createElement('li');
