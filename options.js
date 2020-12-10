@@ -4,7 +4,6 @@ let validationFlag = false;
 var port = chrome.extension.connect({
     name: "Sample Communication"
 });
-// if (port.postMessage("share previuos version")) {
 port.onMessage.addListener(function (msg) {
 
     if (msg.split('version=')[1] <= "1.1.4") {
@@ -48,7 +47,6 @@ port.onMessage.addListener(function (msg) {
 
     } else if (chrome.runtime.getManifest()
         .version > '1.1.4') {
-        // document.addEventListener('DOMContentLoaded', restoreOptions);
         restoreOptions()
     }
 });
