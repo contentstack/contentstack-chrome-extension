@@ -146,7 +146,7 @@ function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
         a.href = `https://${
       csHost
     }/#!/stack/${
-      stack.apikey
+      stack.apiKey
     }/content-type/${
       bodyAttr[1]
     }/${

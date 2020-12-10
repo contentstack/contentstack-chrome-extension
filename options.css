@@ -458,6 +458,12 @@ aside {
     border-top: 8px solid #eef2f5
 }
 
+.displayExportStatus{
+    text-align: center;
+    color: #24c2a3;
+    display: none;
+}
+
 .apikey-block {
     position: relative;
     width: 448px;
@@ -816,7 +822,7 @@ aside {
     list-style-type: none;
     width: 200px;
     right: 12px;
-    z-index: 99;
+    z-index: 9999;
 }
 
 .dd-input+.dd-menu {

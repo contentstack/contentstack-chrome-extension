@@ -4,7 +4,8 @@ const _AnalyticsCode = 'UA-169821045-1';
 (function (i, s, o, g, r, a, m) {
     i.GoogleAnalyticsObject = r;
     i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments);
+        (i[r].q = i[r].q || [])
+        .push(arguments);
     }, i[r].l = 1 * new Date();
     a = s.createElement(o)
         , m = s.getElementsByTagName(o)[0];
@@ -43,17 +44,30 @@ chrome.runtime.onInstalled.addListener((details) => {
         const {
             version
         } = chrome.runtime.getManifest();
+
+        chrome.extension.onConnect.addListener(function (port) {
+            port.postMessage(`version=${details.previousVersion}`);
+        })
         ga('send', {
             hitType: 'event'
             , eventCategory: 'Extension Installation'
             , eventAction: 'Installed'
             , eventLabel: `Version: v${version}`
         , });
+
+        chrome.runtime.sendMessage('', {
+            content: "mapping"
+        });
     } else if (details.reason == 'update') {
         // call a function to handle an update
         const {
             version
         } = chrome.runtime.getManifest();
+
+        chrome.extension.onConnect.addListener(function (port) {
+            port.postMessage(`version=${details.previousVersion}`);
+        })
+
         ga('send', {
             hitType: 'event'
             , eventCategory: 'Extension Updation'

@@ -1,6 +1,58 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
 let validationFlag = false;
+var port = chrome.extension.connect({
+    name: "Sample Communication"
+});
+// if (port.postMessage("share previuos version")) {
+port.onMessage.addListener(function (msg) {
+
+    if (msg.split('version=')[1] <= "1.1.4") {
+        chrome.storage.sync.get({
+            stack: ''
+            , dom: ''
+            , btn: '#5a20b9'
+            , btnPos: 'right'
+            , region: []
+        , }, (prev) => {
+            if (!prev.stack[0].apiKey) {
+
+                let stack = prev.region.map((el, idx) => {
+                    return {
+                        uid: create_UUID()
+                        , apiKey: prev.stack[idx]
+                        , domain: prev.dom[idx]
+                        , region: el
+                    }
+                })
+                let next = {
+                    stack
+                    , btnColor: prev.btn
+                    , btnPos: prev.btnPos
+                }
+                chrome.storage.sync.set({
+                    stack: next.stack
+                    , btnColor: next.btnColor
+                    , btnPos: next.btnPos
+                , }, () => {
+                    createFields(next);
+                })
+            } else {
+                createFields({
+                    stack: prev.stack
+                    , btnColor: prev.btn
+                    , btnPos: prev.btnPos
+                });
+            }
+        })
+
+    } else if (chrome.runtime.getManifest()
+        .version > '1.1.4') {
+        // document.addEventListener('DOMContentLoaded', restoreOptions);
+        restoreOptions()
+    }
+});
+
 
 function focusEvent(evt) {
     evt.target.parentNode.childNodes[1].style.display = 'block';
@@ -182,10 +234,11 @@ function addApikey() {
     document
         .getElementById('apikey-div')
         .insertBefore(borderDiv, document.getElementById('stack-api-btn'));
-    document.querySelectorAll('.remove-btn').forEach((item) => {
-        item.style.display = 'block';
-        item.addEventListener('click', removeApikey);
-    });
+    document.querySelectorAll('.remove-btn')
+        .forEach((item) => {
+            item.style.display = 'block';
+            item.addEventListener('click', removeApikey);
+        });
 }
 
 /**
@@ -292,11 +345,13 @@ function fieldValidation(stack) {
 }
 
 function create_UUID() {
-    var dt = new Date().getTime();
+    var dt = new Date()
+        .getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = (dt + Math.random() * 16) % 16 | 0;
         dt = Math.floor(dt / 16);
-        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8))
+            .toString(16);
     });
     return uuid;
 }
@@ -306,9 +361,11 @@ function create_UUID() {
  */
 
 function fetchFieldContents() {
-    const btnColor = document.getElementById('btnColor').value;
+    const btnColor = document.getElementById('btnColor')
+        .value;
     const btnPos = document.getElementById('btnPos')[
-        document.getElementById('btnPos').selectedIndex
+        document.getElementById('btnPos')
+        .selectedIndex
     ].value;
     let stackId = Array.from(document.getElementsByClassName('stackId'));
     let regions = Array.from(document.getElementsByClassName('regionSelect'));
@@ -358,7 +415,8 @@ function saveOptions() {
                 , btnPos: items.btnPos
             , }
             , () => {
-                document.getElementById('errorIcon').style.display = 'none';
+                document.getElementById('errorIcon')
+                    .style.display = 'none';
                 const status = document.getElementById('displayStatusRemark');
                 status.textContent = 'Settings saved successfully';
                 status.style.color = '#24c2a3';
@@ -398,7 +456,8 @@ function saveOptions() {
         const status = document.getElementById('displayStatusRemark');
         status.textContent = 'Please enter valid inputs';
         status.style.color = '#e44952';
-        document.getElementById('errorIcon').style.display = 'inline-block';
+        document.getElementById('errorIcon')
+            .style.display = 'inline-block';
     }
 }
 
@@ -407,40 +466,29 @@ function saveOptions() {
  */
 
 function createFields(items) {
-    if (items.stack.length !== 1) {
-        items.stack.forEach((stack, idx) => {
-            items.stack.length - 1 != idx ? addApikey() : null
-            Array.from(document.getElementsByClassName('stackId'))[idx].value = stack.apiKey;
-            Array.from(document.getElementsByClassName('domains'))[idx].value = stack.domain;
-            const region = Array.from(document.getElementsByClassName('regionSelect'))[idx]
-            region.value = stack.region.select;
-            if (stack.region.select === 'CR') {
-                region.nextElementSibling.style.display = 'block';
-                region.parentNode.style.top = '16px';
-                region.parentNode.parentNode.style.height = '398px';
-                if (
-                    region.nextElementSibling.childNodes[2].nodeName === 'INPUT'
-                ) {
-                    region.nextElementSibling.childNodes[2].value = stack.region.customUrl;
-                } else {
-                    region.nextElementSibling.childNodes[5].value = stack.region.customUrl;
-                }
+    items.stack.forEach((stack, idx) => {
+        idx != 0 ? addApikey() : null
+        Array.from(document.getElementsByClassName('stackId'))[idx].value = stack.apiKey;
+        Array.from(document.getElementsByClassName('domains'))[idx].value = stack.domain;
+        const region = Array.from(document.getElementsByClassName('regionSelect'))[idx]
+        region.value = stack.region.select;
+        if (stack.region.select === 'CR') {
+            region.nextElementSibling.style.display = 'block';
+            region.parentNode.style.top = '16px';
+            region.parentNode.parentNode.style.height = '398px';
+            if (
+                region.nextElementSibling.childNodes[2].nodeName === 'INPUT'
+            ) {
+                region.nextElementSibling.childNodes[2].value = stack.region.customUrl;
+            } else {
+                region.nextElementSibling.childNodes[5].value = stack.region.customUrl;
             }
-        })
-    } else {
-        document.getElementById('stackKeyId').value = items.stack[0].apiKey;
-        document.getElementById('domainKeyId').value = items.stack[0].domain;
-        document.getElementById('slt-rgn').value = items.stack[0].region.select;
-        if (items.stack[0].region.select === 'CR') {
-            document.getElementById('region-div').style.display = 'block';
-            document.getElementById('regionSetting').style.top = '16px';
-            document.getElementById('apiBlock').style.height = '398px';
-            document.getElementById('regionId').value = items.stack[0].region.customUrl;
         }
-    }
-
-    document.getElementById('btnColor').value = items.btnColor;
-    document.getElementById('btnPos').value = items.btnPos;
+    })
+    document.getElementById('btnColor')
+        .value = items.btnColor;
+    document.getElementById('btnPos')
+        .value = items.btnPos;
 }
 
 
@@ -477,16 +525,34 @@ function importConfig(event) {
 
 function placeFileContent(file) {
 
-    readFileContent(file).then(cont => {
-        let content = JSON.parse(cont);
-        const items = fetchFieldContents();
-        let stack = content.stack.filter(prevVal => !items.stack.find(curVal => prevVal.uid === curVal.uid))
-        createFields({
-            btnColor: content.btnColor
-            , btnPos: content.btnPos
-            , stack
-        });
-    }).catch(error => console.log(error))
+    readFileContent(file)
+        .then(cont => {
+            let content = JSON.parse(cont);
+            const items = fetchFieldContents();
+            let stack = content.stack.concat(items.stack)
+
+            stack = stack.filter(
+                (element, idx, arr) =>
+                idx === arr.findIndex((elm) => elm.uid === element.uid || element.domain === elm.domain)
+            );
+            Array.from(document.getElementsByClassName('apikey-block'))
+                .forEach((el, idx) => idx != 0 ? el.remove() : null)
+            createFields({
+                btnColor: content.btnColor
+                , btnPos: content.btnPos == 'right' || content.btnPos == 'left' ? content.btnPos : 'right'
+                , stack
+            });
+
+            let importfile = document.getElementsByClassName('displayExportStatus')[0];
+            importfile.style.display = 'block'
+            importfile.innerText = 'Imported File Successfully'
+
+            document.getElementsByClassName('dd-menu')[0].style.display = "none"
+            setTimeout(function () {
+                document.getElementsByClassName('displayExportStatus')[0].style.display = "none"
+            }, 5000)
+        })
+        .catch(error => console.log(error))
 }
 
 function readFileContent(file) {
@@ -511,49 +577,42 @@ function exportConfig() {
         url: url
         , filename: 'contentstack-configuration.json'
     });
-}
-document.onload = function(){
-    const chrome =chrome.runtime.getManifest()
-    if(chrome.version != "1.1.4"){
-      chrome.storage.sync.get({
-            stack: '',
-            dom: '',
-            btn: '#5a20b9',
-            btnPos: 'right',
-            region: '',
-        },(prev)=>{
-            let stack = prev.region.map((el ,idx)=>{
-                return {
-                    uid:create_UUID(),
-                    apiKey:prev.stack[idx],
-                    domain: prev.dom[idx],
-                    region:el
-                }
-            })
-            let next = {stack,btnColor:prev.btn, btnPos:prev.btnPos}
-            chrome.storage.sync.set({
-                stack: next.stack
-                , btnColor: next.btnColor
-                , btnPos: next.btnPos
-            , })
-        })
-        
-    }
+
+    let exportfile = document.getElementsByClassName('displayExportStatus')[0];
+    exportfile.style.display = 'block'
+    exportfile.innerText = 'Exported File Successfully'
+
+    document.getElementsByClassName('dd-menu')[0].style.display = "none"
+    setTimeout(function () {
+        document.getElementsByClassName('displayExportStatus')[0].style.display = "none"
+    }, 5000)
 }
 
-document.addEventListener('DOMContentLoaded', restoreOptions);
-document.getElementById('save').addEventListener('click', saveOptions);
-document.getElementById('stack-api-btn').addEventListener('click', addApikey);
-document.getElementById('slt-rgn').addEventListener('change', regionSelection);
-document.getElementById('importBtn').addEventListener('change', importConfig);
-document.getElementById('exportBtn').addEventListener('click', exportConfig);
-document.querySelectorAll('input').forEach((element) => {
-    if (element.name !== 'btnColor') {
-        element.addEventListener('focus', focusEvent);
-    }
-});
-document.querySelectorAll('input').forEach((element) => {
-    if (element.name !== 'btnColor') {
-        element.addEventListener('blur', blurEvent);
-    }
-});
+function disableDropdown() {
+    document.getElementsByClassName('dd-menu')[0].style.display = "block"
+}
+document.querySelector('.dd-button')
+    .addEventListener('click', disableDropdown)
+// 
+document.getElementById('save')
+    .addEventListener('click', saveOptions);
+document.getElementById('stack-api-btn')
+    .addEventListener('click', addApikey);
+document.getElementById('slt-rgn')
+    .addEventListener('change', regionSelection);
+document.getElementById('importBtn')
+    .addEventListener('change', importConfig);
+document.getElementById('exportBtn')
+    .addEventListener('click', exportConfig);
+document.querySelectorAll('input')
+    .forEach((element) => {
+        if (element.name !== 'btnColor') {
+            element.addEventListener('focus', focusEvent);
+        }
+    });
+document.querySelectorAll('input')
+    .forEach((element) => {
+        if (element.name !== 'btnColor') {
+            element.addEventListener('blur', blurEvent);
+        }
+    });
