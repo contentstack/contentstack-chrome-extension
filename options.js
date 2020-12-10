@@ -1,56 +1,56 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
 let validationFlag = false;
-var port = chrome.extension.connect({
-    name: "Sample Communication"
-});
-port.onMessage.addListener(function (msg) {
-
-    if (msg.split('version=')[1] <= "1.1.4") {
-        chrome.storage.sync.get({
-            stack: ''
-            , dom: ''
-            , btn: '#5a20b9'
-            , btnPos: 'right'
-            , region: []
-        , }, (prev) => {
-            if (!prev.stack[0].apiKey) {
-
-                let stack = prev.region.map((el, idx) => {
-                    return {
-                        uid: create_UUID()
-                        , apiKey: prev.stack[idx]
-                        , domain: prev.dom[idx]
-                        , region: el
+chrome.runtime.sendMessage({data:"Handshake"});
+chrome.runtime.onMessage.addListener(
+    function(request) {
+        if (request.msg === "version check") {
+            if (request.data.preVersion <= "1.1.4") {
+                        chrome.storage.sync.get({
+                            stack: ''
+                            , dom: ''
+                            , btn: '#5a20b9'
+                            , btnPos: 'right'
+                            , region: []
+                        , }, (prev) => {
+                            if (!prev.stack[0].apiKey) {
+                
+                                let stack = prev.region.map((el, idx) => {
+                                    return {
+                                        uid: create_UUID()
+                                        , apiKey: prev.stack[idx]
+                                        , domain: prev.dom[idx]
+                                        , region: el
+                                    }
+                                })
+                                let next = {
+                                    stack
+                                    , btnColor: prev.btn
+                                    , btnPos: prev.btnPos
+                                }
+                                chrome.storage.sync.set({
+                                    stack: next.stack
+                                    , btnColor: next.btnColor
+                                    , btnPos: next.btnPos
+                                , }, () => {
+                                    createFields(next);
+                                })
+                            } else {
+                                createFields({
+                                    stack: prev.stack
+                                    , btnColor: prev.btn
+                                    , btnPos: prev.btnPos
+                                });
+                            }
+                        })
+                
+                    } else if (chrome.runtime.getManifest()
+                        .version > '1.1.4') {
+                        restoreOptions()
                     }
-                })
-                let next = {
-                    stack
-                    , btnColor: prev.btn
-                    , btnPos: prev.btnPos
-                }
-                chrome.storage.sync.set({
-                    stack: next.stack
-                    , btnColor: next.btnColor
-                    , btnPos: next.btnPos
-                , }, () => {
-                    createFields(next);
-                })
-            } else {
-                createFields({
-                    stack: prev.stack
-                    , btnColor: prev.btn
-                    , btnPos: prev.btnPos
-                });
-            }
-        })
-
-    } else if (chrome.runtime.getManifest()
-        .version > '1.1.4') {
-        restoreOptions()
+        }
     }
-});
-
+);
 
 function focusEvent(evt) {
     evt.target.parentNode.childNodes[1].style.display = 'block';
@@ -543,7 +543,7 @@ function placeFileContent(file) {
 
             let importfile = document.getElementsByClassName('displayExportStatus')[0];
             importfile.style.display = 'block'
-            importfile.innerText = 'Imported File Successfully'
+            importfile.innerText = 'Configuration File Imported Successfully'
 
             document.getElementsByClassName('dd-menu')[0].style.display = "none"
             setTimeout(function () {
@@ -578,7 +578,7 @@ function exportConfig() {
 
     let exportfile = document.getElementsByClassName('displayExportStatus')[0];
     exportfile.style.display = 'block'
-    exportfile.innerText = 'Exported File Successfully'
+    exportfile.innerText = 'Configuration File Exported Successfully'
 
     document.getElementsByClassName('dd-menu')[0].style.display = "none"
     setTimeout(function () {
@@ -587,11 +587,12 @@ function exportConfig() {
 }
 
 function disableDropdown() {
-    document.getElementsByClassName('dd-menu')[0].style.display = "block"
+   const dropdown = document.getElementsByClassName('dd-menu')[0];
+   console.log(dropdown.style.display);
+   dropdown.style.display = dropdown.style.display === "none"?"block":"none"
 }
 document.querySelector('.dd-button')
-    .addEventListener('click', disableDropdown)
-// 
+    .addEventListener('click', disableDropdown);
 document.getElementById('save')
     .addEventListener('click', saveOptions);
 document.getElementById('stack-api-btn')
