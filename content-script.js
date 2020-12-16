@@ -18,15 +18,15 @@ function fetchAttributes() {
     );
     let dataLocale = document.querySelector("[name=locale]");
     dataLocale = dataLocale ? dataLocale.getAttribute("value") : "en-us";
-    dataAttributes = dataAttributes.map((element) => {
+    dataAttributes = dataAttributes.length > 0 ?dataAttributes.map((element) => {
         return {
             contentType: element.dataset.contenttype
             , entryUID: element.dataset.pageref
             , title: element.dataset.contenttype_title ?
-                dataset.contenttype_title : undefined
-            , default: element.dataset.setDefault ? true : false
+            element.dataset.contenttype_title : undefined
+            , default: element.dataset.setdefault ? true : false
         , };
-    });
+    }):[]
     dataAttributes = dataAttributes.filter(
         (element, idx, arr) =>
         idx === arr.findIndex((elm) => elm.entryUID === element.entryUID)

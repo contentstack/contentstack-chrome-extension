@@ -361,6 +361,8 @@ function saveOptions() {
                 stack: items.stack
                 , btnColor: items.btnColor
                 , btnPos: items.btnPos
+                , dom: []
+                , region: []
             , }
             , () => {
                 document.getElementById('errorIcon')
@@ -414,9 +416,7 @@ function saveOptions() {
  */
 
 function createFields(items) {
-    // if (items.stack.length !== 1) {
     items.stack.forEach((stack, idx) => {
-
         idx != 0 ? addApikey() : null
         Array.from(document.getElementsByClassName('stackId'))[idx].value = stack.apiKey;
         Array.from(document.getElementsByClassName('domains'))[idx].value = stack.domain;
@@ -435,17 +435,6 @@ function createFields(items) {
             }
         }
     })
-    // } else {
-    //     document.getElementById('stackKeyId').value = items.stack[0].apiKey;
-    //     document.getElementById('domainKeyId').value = items.stack[0].domain;
-    //     document.getElementById('slt-rgn').value = items.stack[0].region.select;
-    //     if (items.stack[0].region.select === 'CR') {
-    //         document.getElementById('region-div').style.display = 'block';
-    //         document.getElementById('regionSetting').style.top = '16px';
-    //         document.getElementById('apiBlock').style.height = '398px';
-    //         document.getElementById('regionId').value = items.stack[0].region.customUrl;
-    //     }
-    // }
 
     document.getElementById('btnColor')
         .value = items.btnColor;
@@ -464,14 +453,30 @@ function createFields(items) {
 function restoreOptions() {
 
     chrome.storage.sync.get({
-            stack: []
-            , btnColor: '#5a20b9'
-            , btnPos: 'right'
-        , }
-        , (items) => {
-            createFields(items)
+        stack: []
+        , btn: ''
+        , btnColor: '#5a20b9'
+        , btnPos: 'right'
+        , dom: ''
+        , region: []
+    , }
+    , (items) => {
+        let stack = items.region ? items.region.map((el, idx) => {
+            return {
+                uid: create_UUID()
+                , apiKey: items.stack[idx]
+                , domain: items.dom[idx]
+                , region: el
+            }
+        }) : []
+        stack = stack.length == 0 ? items : {
+            stack
+            , btnColor: items.btn ? items.btn : items.btnColor
+            , btnPos: items.btnPos
         }
-    );
+        createFields(stack);
+    }
+);
 }
 
 /**
@@ -488,32 +493,32 @@ function importConfig(event) {
 function placeFileContent(file) {
 
     readFileContent(file)
-        .then(cont => {
-            let content = JSON.parse(cont);
-            const items = fetchFieldContents();
-            let stack = content.stack.concat(items.stack)
+    .then(cont => {
+        let content = JSON.parse(cont);
+        const items = fetchFieldContents();
+        let stack = content.stack.concat(items.stack)
 
-            stack = stack.filter(
-                (element, idx, arr) =>
-                idx === arr.findIndex((elm) => elm.uid === element.uid && elm.apiKey != '')
-            );
-            Array.from(document.getElementsByClassName('apikey-block'))
-                .forEach((el, idx) => idx != 0 ? el.remove() : null)
-            createFields({
-                btnColor: content.btnColor
-                , btnPos: content.btnPos == 'right' || content.btnPos == 'left' ? content.btnPos : 'right'
-                , stack
-            });
+        stack = stack.filter(
+            (element, idx, arr) =>
+            idx === arr.findIndex((elm) => elm.uid === element.uid || element.domain === elm.domain)
+        );
+        Array.from(document.getElementsByClassName('apikey-block'))
+            .forEach((el, idx) => idx != 0 ? el.remove() : null)
+        createFields({
+            btnColor: content.btnColor
+            , btnPos: content.btnPos == 'right' || content.btnPos == 'left' ? content.btnPos : 'right'
+            , stack
+        });
 
-            let importfile = document.getElementsByClassName('displayExportStatus')[0];
-            importfile.style.display = 'block'
-            importfile.innerText = 'Imported File Successfully'
+        let importfile = document.getElementsByClassName('displayExportStatus')[0];
+        importfile.style.display = 'block'
+        importfile.innerText = 'Configuration File Imported Successfully'
 
-            document.getElementsByClassName('dd-menu')[0].style.display = "none"
-            setTimeout(function () {
-                document.getElementsByClassName('displayExportStatus')[0].style.display = "none"
-            }, 5000)
-        })
+        document.getElementsByClassName('dd-menu')[0].style.display = "none"
+        setTimeout(function () {
+            document.getElementsByClassName('displayExportStatus')[0].style.display = "none"
+        }, 5000)
+    })
         .catch(error => console.log(error))
 }
 
@@ -542,7 +547,7 @@ function exportConfig() {
 
     let exportfile = document.getElementsByClassName('displayExportStatus')[0];
     exportfile.style.display = 'block'
-    exportfile.innerText = 'Exported File Successfully'
+    exportfile.innerText = 'Configuration File Exported Successfully'
 
     document.getElementsByClassName('dd-menu')[0].style.display = "none"
     setTimeout(function () {
