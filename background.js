@@ -45,51 +45,17 @@ chrome.runtime.onInstalled.addListener((details) => {
             version
         } = chrome.runtime.getManifest();
 
-        
-        // chrome.extension.sendMessage({prevVersion:details.previousVersion})
-        // chrome.runtime.onMessage.addListener(function (port) {
-        //     port.postMessage(`version=${details.previousVersion}`);
-        // })
         ga('send', {
             hitType: 'event'
             , eventCategory: 'Extension Installation'
             , eventAction: 'Installed'
             , eventLabel: `Version: v${version}`
         , });
-
-        //        chrome.runtime.onMessage.addListener(function () {
-        //     // port.postMessage(`version=${details.previousVersion}`);
-        //     chrome.runtime.sendMessage({
-        //         msg: "version check", 
-        //         data: {
-        //             preVersion: details.previousVersion
-        //         }
-        //     });
-        // })
-        // chrome.runtime.sendMessage('', {
-        //     content: "mapping"
-        // });
     } else if (details.reason == 'update') {
         // call a function to handle an update
         const {
             version
         } = chrome.runtime.getManifest();
-               chrome.runtime.onMessage.addListener(function () {
-            // port.postMessage(`version=${details.previousVersion}`);
-            chrome.runtime.sendMessage({
-                msg: "version check", 
-                data: {
-                    preVersion: details.previousVersion
-                }
-            });
-        })
-
-       
-
-        // chrome.extension.onConnect.addListener(function (port) {
-        //     port.postMessage(`version=${details.previousVersion}`);
-        // })
-
         ga('send', {
             hitType: 'event'
             , eventCategory: 'Extension Updation'

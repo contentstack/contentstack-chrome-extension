@@ -1,56 +1,6 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-undef */
 let validationFlag = false;
-chrome.runtime.sendMessage({data:"Handshake"});
-chrome.runtime.onMessage.addListener(
-    function(request) {
-        if (request.msg === "version check") {
-            if (request.data.preVersion <= "1.1.4") {
-                        chrome.storage.sync.get({
-                            stack: ''
-                            , dom: ''
-                            , btn: '#5a20b9'
-                            , btnPos: 'right'
-                            , region: []
-                        , }, (prev) => {
-                            if (!prev.stack[0].apiKey) {
-                
-                                let stack = prev.region.map((el, idx) => {
-                                    return {
-                                        uid: create_UUID()
-                                        , apiKey: prev.stack[idx]
-                                        , domain: prev.dom[idx]
-                                        , region: el
-                                    }
-                                })
-                                let next = {
-                                    stack
-                                    , btnColor: prev.btn
-                                    , btnPos: prev.btnPos
-                                }
-                                chrome.storage.sync.set({
-                                    stack: next.stack
-                                    , btnColor: next.btnColor
-                                    , btnPos: next.btnPos
-                                , }, () => {
-                                    createFields(next);
-                                })
-                            } else {
-                                createFields({
-                                    stack: prev.stack
-                                    , btnColor: prev.btn
-                                    , btnPos: prev.btnPos
-                                });
-                            }
-                        })
-                
-                    } else if (chrome.runtime.getManifest()
-                        .version > '1.1.4') {
-                        restoreOptions()
-                    }
-        }
-    }
-);
 
 function focusEvent(evt) {
     evt.target.parentNode.childNodes[1].style.display = 'block';
@@ -426,9 +376,13 @@ function saveOptions() {
         chrome.storage.sync.get({
                 stack: []
                 , btn: '#5a20b9'
+                , btnColor
                 , btnPos: 'right'
+                , dom: []
+                , region: []
             , }
             , (getItems) => {
+                getItems.region.length > 0 ? chrome.storage.sync.remove(['btn', 'dom', 'region']):null
                 if (getItems.stack.length != items.stack.length) {
                     const index = Math.abs(getItems.stack.length - items.stack.length)
                     const newApikey = index != 0 ? getItems.filter(prevVal => !items.find(curVal => prevVal.uid === curVal.uid)) : [];
@@ -501,11 +455,27 @@ function restoreOptions() {
 
     chrome.storage.sync.get({
             stack: []
+            , btn: ''
             , btnColor: '#5a20b9'
             , btnPos: 'right'
+            , dom: ''
+            , region: []
         , }
         , (items) => {
-            createFields(items)
+            let stack = items.region ? items.region.map((el, idx) => {
+                return {
+                    uid: create_UUID()
+                    , apiKey: items.stack[idx]
+                    , domain: items.dom[idx]
+                    , region: el
+                }
+            }) : []
+            stack = stack.length == 0 ? items : {
+                stack
+                , btnColor: items.btn ? items.btn : items.btnColor
+                , btnPos: items.btnPos
+            }
+            createFields(stack);
         }
     );
 }
@@ -550,7 +520,7 @@ function placeFileContent(file) {
                 document.getElementsByClassName('displayExportStatus')[0].style.display = "none"
             }, 5000)
         })
-        .catch(error => console.log(error))
+        .catch(error => console.error(error))
 }
 
 function readFileContent(file) {
@@ -587,9 +557,8 @@ function exportConfig() {
 }
 
 function disableDropdown() {
-   const dropdown = document.getElementsByClassName('dd-menu')[0];
-   console.log(dropdown.style.display);
-   dropdown.style.display = dropdown.style.display === "none"?"block":"none"
+    const dropdown = document.getElementsByClassName('dd-menu')[0];
+    dropdown.style.display = dropdown.style.display === "none" ? "block" : "none"
 }
 document.querySelector('.dd-button')
     .addEventListener('click', disableDropdown);
@@ -615,3 +584,5 @@ document.querySelectorAll('input')
             element.addEventListener('blur', blurEvent);
         }
     });
+
+document.addEventListener('DOMContentLoaded', restoreOptions);
