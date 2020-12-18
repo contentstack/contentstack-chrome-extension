@@ -822,6 +822,7 @@ aside {
     width: 100px;
     right: 12px;
     z-index: 99;
+    display: none;
 }
 
 .dd-menu li {
