@@ -1,6 +1,6 @@
 {
   "name": "Contentstack",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Quickly navigate from a live web page to its corresponding entry in Contentstack",
   "permissions": ["activeTab", "declarativeContent", "storage", "tabs", "downloads"],
   "background": {
