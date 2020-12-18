@@ -361,6 +361,8 @@ function saveOptions() {
                 stack: items.stack
                 , btnColor: items.btnColor
                 , btnPos: items.btnPos
+                , dom: []
+                , region: []
             , }
             , () => {
                 document.getElementById('errorIcon')
@@ -382,7 +384,6 @@ function saveOptions() {
                 , region: []
             , }
             , (getItems) => {
-                getItems.region.length > 0 ? chrome.storage.sync.remove(['btn', 'dom', 'region']):null
                 if (getItems.stack.length != items.stack.length) {
                     const index = Math.abs(getItems.stack.length - items.stack.length)
                     const newApikey = index != 0 ? getItems.filter(prevVal => !items.find(curVal => prevVal.uid === curVal.uid)) : [];
