@@ -171,7 +171,8 @@ function buildBtn(csHost, stack, btn, btnPos, bodyAttr) {
 /**
  * Function checks for mutation and try to create button based on changed value
  */
-observer = new MutationObserver(function () {
+
+ function nodeInsertedCallback() {
     let bodyAttr = fetchAttributes();
     if (!bodyAttr[0] || !bodyAttr[1] || !bodyAttr[2]) {
         editBtn[0].remove();
@@ -183,9 +184,5 @@ observer = new MutationObserver(function () {
             }
         );
     }
-});
-
-observer.observe(document.body, {
-    attributes: true
-    , attributeFilter: ['data-contenttype']
-});
+};
+document.addEventListener('DOMNodeInserted', nodeInsertedCallback);
